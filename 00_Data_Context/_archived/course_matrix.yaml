@@ -1,0 +1,21 @@
+# 课程体系支撑矩阵 (Course Support Matrix)
+# H: High, M: Medium, L: Low
+# key = 毕业要求大类序号, point = 观测点, level = 支撑度
+courses:
+  信息可视化设计:
+    1: { point: 1.2, level: L } # 职业修养与责任感 (quality[2]: 防范数据造假)
+    2: { point: 2.2, level: M } # 跨学科知识整合 (knowledge[1])
+    2b: { point: 2.1, level: M } # 基础知识掌握 (knowledge[2]: 复杂数据结构)
+    3: { point: 3.2, level: M } # 独立创意思考与原创设计 (ability[1])
+    4: { point: 4.1, level: M } # 专业技术实现能力 (ability[2]: D3/ECharts)
+    5: { point: 5.1, level: M } # 信息应用 (quality[1])
+
+  交互产品开发:
+    1: { point: 1.2, level: L } # 职业修养与责任感 (quality[1]: 暗黑模式防范)
+    2: { point: 2.1, level: H } # 基础知识掌握 (knowledge[1]: 认知心理学)
+    2b: { point: 2.2, level: M } # 跨学科知识整合 (knowledge[3]: AI代码生成)
+    3: { point: 3.3, level: M } # 批判性思维与设计优化 (ability[3]: 启发式走查)
+    4: { point: 4.1, level: H } # 专业技术实现能力 (ability[1]: 状态机/逻辑流)
+    4b: { point: 4.2, level: M } # 专业技能纵深 (ability[2]: Vibe Coding)
+    4c: { point: 4.3, level: M } # 问题诊断与解决能力 (knowledge[2]: 敏捷调研)
+    9: { point: 9.1, level: L } # 终身学习意识 (quality[2]: AI协同)

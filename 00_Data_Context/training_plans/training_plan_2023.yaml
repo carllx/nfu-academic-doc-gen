@@ -1,0 +1,68 @@
+# 人才培养方案结构化数据 — 2023 版
+# ═══════════════════════════════════════════════════════════════
+# SSOT: 本文件为 2023 版人培的可机读权威来源
+# 来源: 南方人培_源文件/23 级-设计学院-本科(含有专升本).pdf 第153-173页
+# 消费者: scripts/audit_course_data.py (人培交叉校验)
+# 创建: 2026-05-14
+#
+# ⚠️ 重要说明：2023 版人培无毕业要求体系和课程支撑矩阵。
+#   审计脚本对此版本仅执行基础课程信息校验（学分/学时），
+#   不执行毕业要求映射交叉校验。
+# ═══════════════════════════════════════════════════════════════
+
+version: "2023"
+major: 数字媒体艺术
+major_english: Digital Media Art
+major_code: "130508"
+degree: 艺术学学士
+duration: 4
+
+# ─── 培养目标 ───────────────────────────────────────────────
+# 2023版未分条列出培养目标，仅有段落描述
+training_objectives:
+  summary: 培养具有良好人文素质、艺术修养和审美能力，掌握互联网产品开发、影视、游戏、动画的基本理论、知识和方法的本科应用型人才
+
+# ─── 毕业要求 → 2023版无此体系 ──────────────────────────────
+graduation_requirements_ref: graduation_requirements_2023.yaml
+
+# ─── 学分结构 ──────────────────────────────────────────────
+credit_structure:
+  total: 150
+  public_required: 47
+  public_elective: 13          # 含校级公选课
+  major_core: 25
+  major_direction: 25
+  major_practice: 3
+  major_career: 2
+  major_thesis: 4
+  major_elective: 31
+  growth_education: 6          # 2023版特有：成长教育（必修2+选修4）
+
+# ─── 课程基础信息 ──────────────────────────────────────────
+# 2023版无 support_map，仅记录基础课程信息
+course_matrix:
+
+  信息可视化:
+    official_name: 信息可视化
+    english_name: Information Visualization
+    credits: 2
+    hours:
+      total: 40
+      theory: 0
+      practice: 40
+    nature: 专业任选课
+
+  交互产品开发:
+    official_name: 交互产品开发
+    english_name: Interactive Product Development
+    credits: 3
+    hours:
+      total: 60
+      theory: 0
+      practice: 60
+    nature: 专业任选课
+
+# ─── 变更日志 ──────────────────────────────────────────────
+# 2026-05-14: 初建。从 2023 人培 PDF 提取结构化数据。
+#             注意: 23版人培中课程名为「交互产品开发」而非24/25版的「交互产品综合创作」。
+#             23版无毕业要求支撑矩阵，course_matrix 仅含基础信息。

@@ -1,0 +1,83 @@
+# 人才培养方案结构化数据 — 2024 版
+# ═══════════════════════════════════════════════════════════════
+# SSOT: 本文件为 2024 版人培的可机读权威来源
+# 来源: 南方人培_源文件/24级-设计学院-本科(含有专升本).pdf 第66-90页
+# 消费者: scripts/audit_course_data.py (人培交叉校验)
+# 创建: 2026-05-14
+# ═══════════════════════════════════════════════════════════════
+
+version: "2024"
+major: 数字媒体艺术
+major_english: Digital Media Art
+major_code: "130508"
+degree: 艺术学学士
+duration: 4
+
+# ─── 培养目标 ───────────────────────────────────────────────
+training_objectives:
+  1: 价值观与社会责任
+  2: 综合素养与创新
+  3: 专业能力
+  4: 国际视野与团队协作
+  5: 终身学习
+
+# ─── 毕业要求 → 外部化 SSOT ──────────────────────────────────
+# 详细定义见 graduation_requirements_2024.yaml
+# 2024版特征：9条要求，无观测点细分，支撑矩阵仅打勾无H/M/L级别
+graduation_requirements_ref: graduation_requirements_2024.yaml
+
+# ─── 学分结构 ──────────────────────────────────────────────
+credit_structure:
+  total: 150
+  public_required: 47
+  public_elective: 6
+  major_core: 30
+  major_direction: 25
+  major_practice: 3
+  major_career: 2
+  major_thesis: 4
+  major_elective: 33
+
+# ─── 课程支撑矩阵 ──────────────────────────────────────────
+# 2024版特征：仅打勾(✓)，无 H/M/L 支撑级别
+# support_map.point: 直接使用毕业要求大类编号（无观测点细分）
+# support_map.level: 统一标记为 "✓"（无 H/M/L 区分）
+#
+# 注: 仅录入本教务项目当前服务的课程
+course_matrix:
+
+  信息可视化:
+    official_name: 信息可视化
+    english_name: Information Visualization
+    credits: 2
+    hours:
+      total: 40
+      theory: 20
+      practice: 20
+    nature: 专业任选课
+    support_map:
+      - point: "3"
+        level: "✓"
+      - point: "4"
+        level: "✓"
+
+  交互产品综合创作:
+    official_name: 交互产品综合创作
+    english_name: Comprehensive Interactive Product Creation
+    credits: 3
+    hours:
+      total: 60
+      theory: 20
+      practice: 40
+    nature: 专业方向课
+    support_map:
+      - point: "4"
+        level: "✓"
+      - point: "6"
+        level: "✓"
+      - point: "8"
+        level: "✓"
+
+# ─── 变更日志 ──────────────────────────────────────────────
+# 2026-05-14: 初建。从 2024 人培 PDF 提取结构化数据。
+#             course_matrix 仅含当前服务的两门课程。

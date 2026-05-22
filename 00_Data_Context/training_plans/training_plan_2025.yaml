@@ -1,0 +1,88 @@
+# 人才培养方案结构化数据 (Training Plan Structured Data)
+# ═══════════════════════════════════════════════════════════════
+# SSOT: 本文件为 2025 版人培的可机读权威来源
+# 来源: 数艺-25本科-人培（文字）.docx + 数艺-25本科-人培（表格）.xlsx
+# 消费者: scripts/audit_course_data.py (人培交叉校验)
+# 创建: 2026-02-26
+# ═══════════════════════════════════════════════════════════════
+
+version: "2025"
+major: 数字媒体艺术
+major_english: Digital Media Art
+major_code: "130508"
+degree: 艺术学学士
+duration: 4
+
+# ─── 培养目标 ───────────────────────────────────────────────
+training_objectives:
+  1: 人文素养与职业道德
+  2: 跨领域协作与沟通
+  3: 专业知识与技能应用
+  4: 独立思考和解决问题
+  5: 持续发展与提升
+
+# ─── 毕业要求 → 外部化 SSOT ──────────────────────────────────
+# 详细观测点定义见 graduation_requirements.yaml
+# 此处仅记录 9 大要求名称索引
+graduation_requirements_ref: graduation_requirements.yaml
+
+# ─── 学分结构 ──────────────────────────────────────────────
+credit_structure:
+  total: 150
+  public_required: 47      # 公共必修 (英语12+体育4+思政18+通识11+劳动2)
+  public_elective: 6       # 公共选修 (校级公选课/学术报告)
+  major_foundation: 19     # 专业基础课
+  major_core: 18           # 专业核心课
+  major_direction: 18      # 专业方向课
+  major_practice: 3        # 专业实习
+  major_career: 2          # 就业指导
+  major_thesis: 4          # 毕业论文/设计
+  major_elective: 33       # 专业选修课
+
+# ─── 课程支撑矩阵 ──────────────────────────────────────────
+# 记录人培中每门课程对毕业要求观测点的官方支撑关系
+# support_map.point: 与 graduation_requirements.yaml 中的编号对应
+# support_map.level: H(高) / M(中) / L(低)
+#
+# 注: 仅录入本教务项目当前服务的课程
+course_matrix:
+
+  信息可视化设计:
+    official_name: 信息可视化设计
+    english_name: Information Visualization Design
+    credits: 3
+    hours:
+      total: 60
+      theory: 20
+      practice: 40
+    semester: 4
+    nature: 专业选修课
+    support_map:
+      - point: "2.2"
+        level: M
+      - point: "4.1"
+        level: M
+      - point: "5.3"
+        level: M
+
+  交互产品综合创作:
+    official_name: 交互产品综合创作
+    english_name: Comprehensive Interactive Product Creation
+    credits: 3
+    hours:
+      total: 60
+      theory: 20
+      practice: 40
+    semester: 6
+    nature: 专业选修课
+    support_map:
+      - point: "2.3"
+        level: H
+      - point: "3.2"
+        level: M
+      - point: "7.2"
+        level: H
+
+# ─── 变更日志 ──────────────────────────────────────────────
+# 2026-02-26: 初建。从 2025 人培 docx/xlsx 提取结构化数据。
+#             course_matrix 仅含当前服务的两门课程。

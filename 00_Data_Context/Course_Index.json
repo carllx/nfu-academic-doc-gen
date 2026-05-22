@@ -1,0 +1,17 @@
+{
+  "source_directory": "/Users/yamlam/Downloads/2025-2026-2 课程",
+  "courses": [
+    {
+      "name": "交互产品开发",
+      "path": "交互产品开发"
+    },
+    {
+      "name": "信息可视化",
+      "path": "信息可视化"
+    },
+    {
+      "name": "实习指导",
+      "path": "实习指导"
+    }
+  ]
+}

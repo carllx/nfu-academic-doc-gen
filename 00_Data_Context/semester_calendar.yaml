@@ -1,0 +1,41 @@
+# 学期日历（节假日权威数据源）
+# SSOT：本文件为 2025-2026-2 学期所有法定节假日/调课日的唯一权威来源
+# 消费者：scripts/utils/semester_utils.py → HolidayManager（待改造从本文件加载）
+#
+# ✅ 节假日日期已由教师确认 (2026-02-24)。状态: CONFIRMED
+
+semester: 2025-2026-2
+start_date: "2026-03-02"   # 学期第1周周一
+
+holidays:
+  - date: "2026-04-06"
+    name: 清明节（补休）
+    affected_weekdays: [1]      # 週一受影响
+    week_num: 6                 # 第6自然周
+    makeup_date: null
+
+  - date: "2026-05-01"
+    name: 劳动节
+    affected_weekdays: [5]      # 週五受影响（信息可视化影视班上课日）
+    week_num: 9
+    makeup_date: null
+
+  - date: "2026-05-02"
+    name: 劳动节（连休）
+    affected_weekdays: [6]      # 仅周六受影响；周日（W9）按教务排课正常上课
+    week_num: 9
+    makeup_date: null
+
+  - date: "2026-06-19"
+    name: 端午节
+    affected_weekdays: [5]      # 週五受影响（信息可视化游戏班上课日）
+    week_num: 16
+    makeup_date: null           # 是否补课：待确认（H-02）
+
+makeup_days: []   # 调休补课日（如有，格式同 holidays）
+
+# ---
+# 变更日志
+# 2026-02-24: 初建，数据源为 semester_utils.py HolidayManager 中的硬编码值
+#             状态: DRAFT，等待教师确认实际节假日安排（H-02）
+# 2026-02-24: 教师确认节假日日期无误，状态 → CONFIRMED
