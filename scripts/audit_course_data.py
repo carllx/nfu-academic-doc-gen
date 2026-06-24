@@ -55,7 +55,17 @@ def audit_course_dir(course_dir: Path, training_plans_dir: Path = None) -> List[
     if not yaml_path.exists():
         return [f"[MISSING] course.yaml not found in {course_dir.name}"]
     
-    data = load_yaml(yaml_path)
+    # 优先使用 course_loader（支持 includes 合并）
+    import importlib.util
+    _loader_path = str(course_dir.parent / "course_loader.py") if (course_dir.parent / "course_loader.py").exists() else None
+    if _loader_path:
+        _spec = importlib.util.spec_from_file_location("course_loader", _loader_path)
+        _course_loader = importlib.util.module_from_spec(_spec)
+        _spec.loader.exec_module(_course_loader)
+        data = _course_loader.load_course(str(course_dir))
+    else:
+        # 回退：无 course_loader 时走旧路径
+        data = load_yaml(yaml_path)
     if not data:
         return [f"[ERROR] Failed to parse course.yaml in {course_dir.name}"]
     

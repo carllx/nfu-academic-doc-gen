@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <dcterms:created xsi:type="dcterms:W3CDTF">2023-12-07T03:34:00Z</dcterms:created>
+  <dc:creator>春晓</dc:creator>
+  <cp:lastModifiedBy>心太软</cp:lastModifiedBy>
+  <cp:lastPrinted>2024-05-20T01:48:00Z</cp:lastPrinted>
+  <dcterms:modified xsi:type="dcterms:W3CDTF">2026-05-26T01:14:14Z</dcterms:modified>
+  <cp:revision>1</cp:revision>
+</cp:coreProperties>

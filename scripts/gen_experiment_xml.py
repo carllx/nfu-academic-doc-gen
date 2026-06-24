@@ -27,6 +27,7 @@ from scripts.docx_engine import (
     set_run_text,
     fill_multiline,
     clone_table_row,
+    remove_table_row,
     get_table_cell,
     find_table_by_header,
     render_docx,
@@ -724,6 +725,8 @@ def _fill_guide_toc(body, experiments: list):
                 matched_name = name
                 break
         if matched_name is None:
+            # 动态裁切：如果当前目录占位符未匹配到实际实验（如 40 学时仅 3 个实验），则将其从 XML 中移除
+            p.getparent().remove(p)
             continue
 
         # 在段落内（含 hyperlink 内）找含 XXXX 的 run 替换（包含匹配，保留前置空格）
@@ -749,7 +752,7 @@ def _fill_guide_overview_table(body, experiments: list):
     模板已有4行数据（R1-R4），直接填充，不需要 clone。
     列顺序：序号(0) | 项目名称(1) | 实验类型(2) | 开出要求(3) | 每组人数(4) | 学时(5)
     """
-    # 找到一览表（含「序号」表头）
+    # 找到一览表（含「实验序号」或「序号」表头）
     overview_table = None
     for tbl in body.findall('.//{%s}tbl' % qn('w:tbl').split('}')[0].lstrip('{')):
         first_row_text = ''
@@ -758,7 +761,7 @@ def _fill_guide_overview_table(body, experiments: list):
             first_row_text = ''.join(
                 (t.text or '') for t in rows[0].iter(qn('w:t'))
             )
-        if '序号' in first_row_text and '项目名称' in first_row_text:
+        if ('序号' in first_row_text or '实验序号' in first_row_text) and '项目名称' in first_row_text:
             overview_table = tbl
             break
 
@@ -791,12 +794,29 @@ def _fill_guide_overview_table(body, experiments: list):
         data_rows = rows[1:-1]
         print(f"    📋 一览表已动态扩展 {extra_needed} 行（共 {len(data_rows)} 个实验）")
 
+    # 裁切冗余：若实验数 < 模板数据行数，删除多余的数据行
+    elif len(exps_sorted) < len(data_rows):
+        extra_to_remove = len(data_rows) - len(exps_sorted)
+        last_data_row_idx = len(rows) - 2
+        for i in range(extra_to_remove):
+            remove_table_row(overview_table, last_data_row_idx - i)
+        
+        rows = overview_table.findall(qn('w:tr'))
+        data_rows = rows[1:-1]
+        print(f"    📋 一览表已自适应裁切 {extra_to_remove} 行（共 {len(data_rows)} 个实验）")
+
     for row_elem, exp in zip(data_rows, exps_sorted):
         tcs = row_elem.findall(qn('w:tc'))
         exp_id = exp.get('id', '')
         exp_name = exp.get('name', '')
         exp_type = exp.get('type', '')
-        group_size = str(exp.get('group_size', ''))
+        
+        # 默认值注入：要求必做，人数 1人
+        requirement = str(exp.get('requirement', '必做'))
+        group_size = str(exp.get('group_size', '1人'))
+        if group_size.isdigit():
+            group_size += "人"
+            
         hours = str(exp.get('hours', ''))
 
         for ci, tc in enumerate(tcs):
@@ -809,7 +829,7 @@ def _fill_guide_overview_table(body, experiments: list):
                 # 实验类型
                 _fill_table_cell_xxxx(tc, exp_type)
             elif ci == 3:
-                continue  # 开出要求：模板已写「必做」，不覆盖
+                _fill_table_cell_xxxx(tc, requirement)
             elif ci == 4:
                 # 每组人数
                 _fill_table_cell_xxxx(tc, group_size)
@@ -956,13 +976,7 @@ def _fill_guide_experiment_sections(body, experiments: list):
                 p = subsection_paragraphs[pi]
                 text = get_paragraph_text(p)
                 if text.strip() == 'XXXX':
-                    # 直接替换该段落的 XXXX run
-                    for r in p.findall(qn('w:r')):
-                        t_el = r.find(qn('w:t'))
-                        if t_el is not None and t_el.text == 'XXXX':
-                            t_el.text = value
-                            t_el.set(XML_SPACE, 'preserve')
-                            break
+                    fill_multiline(p, value)
                     break
                 elif text.strip() and text.strip() != kw:
                     break  # 遇到非空非目标段落，停止

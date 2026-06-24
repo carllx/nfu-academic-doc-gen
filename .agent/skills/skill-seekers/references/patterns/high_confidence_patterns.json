@@ -1,0 +1,240 @@
+[
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/api_reference_builder.py",
+    "class_name": "APIReferenceBuilder",
+    "method_name": null,
+    "line_number": 25,
+    "evidence": [
+      "Class name contains \"Builder\": APIReferenceBuilder"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/api_reference_builder.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/how_to_guide_builder.py",
+    "class_name": "HowToGuideBuilder",
+    "method_name": null,
+    "line_number": 821,
+    "evidence": [
+      "Class name contains \"Builder\": HowToGuideBuilder"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/how_to_guide_builder.py"
+  },
+  {
+    "pattern_type": "Factory",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py",
+    "class_name": "FactoryDetector",
+    "method_name": null,
+    "line_number": 510,
+    "evidence": [
+      "Class name contains \"Factory\""
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Strategy",
+    "category": "Behavioral",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py",
+    "class_name": "StrategyDetector",
+    "method_name": null,
+    "line_number": 746,
+    "evidence": [
+      "Class name suggests Strategy: StrategyDetector"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py",
+    "class_name": "BuilderDetector",
+    "method_name": null,
+    "line_number": 960,
+    "evidence": [
+      "Class name contains \"Builder\": BuilderDetector"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Adapter",
+    "category": "Structural",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py",
+    "class_name": "AdapterDetector",
+    "method_name": null,
+    "line_number": 1091,
+    "evidence": [
+      "Class name suggests Adapter: AdapterDetector"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Adapter",
+    "category": "Structural",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py",
+    "class_name": "LanguageAdapter",
+    "method_name": null,
+    "line_number": 1499,
+    "evidence": [
+      "Class name suggests Adapter: LanguageAdapter"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/unified_skill_builder.py",
+    "class_name": "UnifiedSkillBuilder",
+    "method_name": null,
+    "line_number": 26,
+    "evidence": [
+      "Class name contains \"Builder\": UnifiedSkillBuilder"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/unified_skill_builder.py"
+  },
+  {
+    "pattern_type": "Strategy",
+    "category": "Behavioral",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/video_models.py",
+    "class_name": "SegmentationStrategy",
+    "method_name": null,
+    "line_number": 78,
+    "evidence": [
+      "Class name suggests Strategy: SegmentationStrategy"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/src/skill_seekers/cli/video_models.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_api_reference_builder.py",
+    "class_name": "TestAPIReferenceBuilder",
+    "method_name": null,
+    "line_number": 26,
+    "evidence": [
+      "Class name contains \"Builder\": TestAPIReferenceBuilder"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_api_reference_builder.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_how_to_guide_builder.py",
+    "class_name": "TestHowToGuideBuilder",
+    "method_name": null,
+    "line_number": 416,
+    "evidence": [
+      "Class name contains \"Builder\": TestHowToGuideBuilder"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_how_to_guide_builder.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_multi_source.py",
+    "class_name": "TestUnifiedSkillBuilderDocsReferences",
+    "method_name": null,
+    "line_number": 88,
+    "evidence": [
+      "Class name contains \"Builder\": TestUnifiedSkillBuilderDocsReferences"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_multi_source.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_multi_source.py",
+    "class_name": "TestUnifiedSkillBuilderGitHubReferences",
+    "method_name": null,
+    "line_number": 287,
+    "evidence": [
+      "Class name contains \"Builder\": TestUnifiedSkillBuilderGitHubReferences"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_multi_source.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_multi_source.py",
+    "class_name": "TestUnifiedSkillBuilderPdfReferences",
+    "method_name": null,
+    "line_number": 464,
+    "evidence": [
+      "Class name contains \"Builder\": TestUnifiedSkillBuilderPdfReferences"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_multi_source.py"
+  },
+  {
+    "pattern_type": "Builder",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_new_source_types.py",
+    "class_name": "TestUnifiedSkillBuilderGenericMerge",
+    "method_name": null,
+    "line_number": 507,
+    "evidence": [
+      "Class name contains \"Builder\": TestUnifiedSkillBuilderGenericMerge"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_new_source_types.py"
+  },
+  {
+    "pattern_type": "Factory",
+    "category": "Creational",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_pattern_recognizer.py",
+    "class_name": "TestFactoryDetector",
+    "method_name": null,
+    "line_number": 112,
+    "evidence": [
+      "Class name contains \"Factory\""
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_pattern_recognizer.py"
+  },
+  {
+    "pattern_type": "Adapter",
+    "category": "Structural",
+    "confidence": 0.7,
+    "location": "/private/tmp/Skill_Seekers/tests/test_pattern_recognizer.py",
+    "class_name": "TestLanguageAdapter",
+    "method_name": null,
+    "line_number": 487,
+    "evidence": [
+      "Class name suggests Adapter: TestLanguageAdapter"
+    ],
+    "related_classes": [],
+    "file_path": "/private/tmp/Skill_Seekers/tests/test_pattern_recognizer.py"
+  }
+]

@@ -1,0 +1,91 @@
+# How To: Parse
+
+**Difficulty**: Advanced
+**Estimated Time**: 15 minutes
+**Tags**: unittest, mock, workflow, integration
+
+## Overview
+
+Workflow: test parse
+
+## Prerequisites
+
+**Required Modules:**
+- `unittest`
+- `unittest.mock`
+- `pytest`
+- `nltk.parse`
+- `nltk.tree`
+
+
+## Step-by-Step Guide
+
+### Step 1: Assign corenlp_parser = corenlp.CoreNLPParser(...)
+
+```python
+corenlp_parser = corenlp.CoreNLPParser()
+```
+
+### Step 2: Assign api_return_value = value
+
+```python
+api_return_value = {'sentences': [{'basicDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'enhancedDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod:over', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'enhancedPlusPlusDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod:over', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'index': 0, 'parse': '(ROOT\n  (NP\n    (NP (DT The) (JJ quick) (JJ brown) (NN fox))\n    (NP\n      (NP (NNS jumps))\n      (PP (IN over)\n        (NP (DT the) (JJ lazy) (NN dog))))))', 'tokens': [{'after': ' ', 'before': '', 'characterOffsetBegin': 0, 'characterOffsetEnd': 3, 'index': 1, 'lemma': 'the', 'originalText': 'The', 'pos': 'DT', 'word': 'The'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 4, 'characterOffsetEnd': 9, 'index': 2, 'lemma': 'quick', 'originalText': 'quick', 'pos': 'JJ', 'word': 'quick'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 10, 'characterOffsetEnd': 15, 'index': 3, 'lemma': 'brown', 'originalText': 'brown', 'pos': 'JJ', 'word': 'brown'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 16, 'characterOffsetEnd': 19, 'index': 4, 'lemma': 'fox', 'originalText': 'fox', 'pos': 'NN', 'word': 'fox'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 20, 'characterOffsetEnd': 25, 'index': 5, 'lemma': 'jump', 'originalText': 'jumps', 'pos': 'VBZ', 'word': 'jumps'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 26, 'characterOffsetEnd': 30, 'index': 6, 'lemma': 'over', 'originalText': 'over', 'pos': 'IN', 'word': 'over'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 31, 'characterOffsetEnd': 34, 'index': 7, 'lemma': 'the', 'originalText': 'the', 'pos': 'DT', 'word': 'the'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 35, 'characterOffsetEnd': 39, 'index': 8, 'lemma': 'lazy', 'originalText': 'lazy', 'pos': 'JJ', 'word': 'lazy'}, {'after': '', 'before': ' ', 'characterOffsetBegin': 40, 'characterOffsetEnd': 43, 'index': 9, 'lemma': 'dog', 'originalText': 'dog', 'pos': 'NN', 'word': 'dog'}]}]}
+```
+
+### Step 3: Assign corenlp_parser.api_call = MagicMock(...)
+
+```python
+corenlp_parser.api_call = MagicMock(return_value=api_return_value)
+```
+
+### Step 4: Assign input_string = unknown.split(...)
+
+```python
+input_string = 'The quick brown fox jumps over the lazy dog'.split()
+```
+
+### Step 5: Assign expected_output = Tree(...)
+
+```python
+expected_output = Tree('ROOT', [Tree('NP', [Tree('NP', [Tree('DT', ['The']), Tree('JJ', ['quick']), Tree('JJ', ['brown']), Tree('NN', ['fox'])]), Tree('NP', [Tree('NP', [Tree('NNS', ['jumps'])]), Tree('PP', [Tree('IN', ['over']), Tree('NP', [Tree('DT', ['the']), Tree('JJ', ['lazy']), Tree('NN', ['dog'])])])])])])
+```
+
+### Step 6: Assign parsed_data = next(...)
+
+```python
+parsed_data = next(corenlp_parser.parse(input_string))
+```
+
+### Step 7: Call corenlp_parser.api_call.assert_called_once_with()
+
+```python
+corenlp_parser.api_call.assert_called_once_with('The quick brown fox jumps over the lazy dog', properties={'ssplit.eolonly': 'true'})
+```
+
+### Step 8: Call self.assertEqual()
+
+```python
+self.assertEqual(expected_output, parsed_data)
+```
+
+
+## Complete Example
+
+```python
+# Workflow
+corenlp_parser = corenlp.CoreNLPParser()
+api_return_value = {'sentences': [{'basicDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'enhancedDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod:over', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'enhancedPlusPlusDependencies': [{'dep': 'ROOT', 'dependent': 4, 'dependentGloss': 'fox', 'governor': 0, 'governorGloss': 'ROOT'}, {'dep': 'det', 'dependent': 1, 'dependentGloss': 'The', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 2, 'dependentGloss': 'quick', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'amod', 'dependent': 3, 'dependentGloss': 'brown', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'dep', 'dependent': 5, 'dependentGloss': 'jumps', 'governor': 4, 'governorGloss': 'fox'}, {'dep': 'case', 'dependent': 6, 'dependentGloss': 'over', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'det', 'dependent': 7, 'dependentGloss': 'the', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'amod', 'dependent': 8, 'dependentGloss': 'lazy', 'governor': 9, 'governorGloss': 'dog'}, {'dep': 'nmod:over', 'dependent': 9, 'dependentGloss': 'dog', 'governor': 5, 'governorGloss': 'jumps'}], 'index': 0, 'parse': '(ROOT\n  (NP\n    (NP (DT The) (JJ quick) (JJ brown) (NN fox))\n    (NP\n      (NP (NNS jumps))\n      (PP (IN over)\n        (NP (DT the) (JJ lazy) (NN dog))))))', 'tokens': [{'after': ' ', 'before': '', 'characterOffsetBegin': 0, 'characterOffsetEnd': 3, 'index': 1, 'lemma': 'the', 'originalText': 'The', 'pos': 'DT', 'word': 'The'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 4, 'characterOffsetEnd': 9, 'index': 2, 'lemma': 'quick', 'originalText': 'quick', 'pos': 'JJ', 'word': 'quick'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 10, 'characterOffsetEnd': 15, 'index': 3, 'lemma': 'brown', 'originalText': 'brown', 'pos': 'JJ', 'word': 'brown'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 16, 'characterOffsetEnd': 19, 'index': 4, 'lemma': 'fox', 'originalText': 'fox', 'pos': 'NN', 'word': 'fox'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 20, 'characterOffsetEnd': 25, 'index': 5, 'lemma': 'jump', 'originalText': 'jumps', 'pos': 'VBZ', 'word': 'jumps'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 26, 'characterOffsetEnd': 30, 'index': 6, 'lemma': 'over', 'originalText': 'over', 'pos': 'IN', 'word': 'over'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 31, 'characterOffsetEnd': 34, 'index': 7, 'lemma': 'the', 'originalText': 'the', 'pos': 'DT', 'word': 'the'}, {'after': ' ', 'before': ' ', 'characterOffsetBegin': 35, 'characterOffsetEnd': 39, 'index': 8, 'lemma': 'lazy', 'originalText': 'lazy', 'pos': 'JJ', 'word': 'lazy'}, {'after': '', 'before': ' ', 'characterOffsetBegin': 40, 'characterOffsetEnd': 43, 'index': 9, 'lemma': 'dog', 'originalText': 'dog', 'pos': 'NN', 'word': 'dog'}]}]}
+corenlp_parser.api_call = MagicMock(return_value=api_return_value)
+input_string = 'The quick brown fox jumps over the lazy dog'.split()
+expected_output = Tree('ROOT', [Tree('NP', [Tree('NP', [Tree('DT', ['The']), Tree('JJ', ['quick']), Tree('JJ', ['brown']), Tree('NN', ['fox'])]), Tree('NP', [Tree('NP', [Tree('NNS', ['jumps'])]), Tree('PP', [Tree('IN', ['over']), Tree('NP', [Tree('DT', ['the']), Tree('JJ', ['lazy']), Tree('NN', ['dog'])])])])])])
+parsed_data = next(corenlp_parser.parse(input_string))
+corenlp_parser.api_call.assert_called_once_with('The quick brown fox jumps over the lazy dog', properties={'ssplit.eolonly': 'true'})
+self.assertEqual(expected_output, parsed_data)
+```
+
+## Next Steps
+
+
+---
+
+*Source: test_corenlp.py:757 | Complexity: Advanced | Last updated: 2026-06-02*

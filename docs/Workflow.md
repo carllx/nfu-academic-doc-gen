@@ -8,18 +8,19 @@
 找到您的课程文件夹，例如：
 `2025-2026-2 课程/交互产品开发/`
 
-### 2. 填写 `course.yaml`
-这是最关键的一步。所有文档的内容都来自这里。
+### 2. 编辑课程数据
+这是最关键的一步。所有文档的内容都来自这里。课程数据已拆分为多个子文件（ADR-044），编辑对应子文件即可，`course_loader.py` 会自动合并：
+*   **`course_meta.yaml`**：课程名、代码、学分、性质、班级信息、教师信息、学期配置。
 *   **基础信息**：课程名、代码、学分、性质（须为规范 5 类之一）。
 *   **班级信息** (`classes`)：定义所有授课班级及其上课时间。
-*   **教学日历** (`calendar`)：
+*   **`course_calendar.yaml`**：教学日历 (`calendar`)：
     *   **简要模式**：仅填写周主题 (`topic`)、内容 (`content`)、作业。
     *   **详细模式**（推荐）：在 `lessons` 中定义每节课的教学目标与步骤（用于教案）。
     *   **大纲扩展字段**：`teaching_requirements`、`focus`、`difficulty`、`ideology`、`teaching_method`（用于大纲章节）。
-*   **实验项目** (`experiments`)：如有实验，需详细列出项目名称、学时、类型。
-*   **教材与学期** (`textbooks`, `semester_config`)：填写教材信息与学期开始日期。
-*   **考试配置** (`exams`)：**必填**，即使是考查课也必须填写。
-*   **课程目标** (`objectives`)：分为知识/能力/素质三类，每项使用 `mappings` 数组映射到毕业要求观测点。**编号必须与人培方案矩阵精确匹配**。
+*   **`course_experiments.yaml`**：实验项目 (`experiments`)：如有实验，需详细列出项目名称、学时、类型。
+*   **`course_textbooks.yaml`**：教材与学期配置。
+*   **`course_assessment.yaml`**：考试配置（`exams`，**必填**）、考核方式 (`assessment_methods`)。
+*   **`course_objectives.yaml`**：课程目标（`objectives`）：分为知识/能力/素质三类，每项使用 `mappings` 数组映射到毕业要求观测点。**编号必须与人培方案矩阵精确匹配**。
 *   **学情分析** (`student_analysis`)：可选字段，用于教案首页模板。
 *   **课程性质** (`nature`)：合法值为 `专业必修课` / `专业选修课` / `公共必修课` / `公共选修课` / `成长必修课`
 
@@ -52,14 +53,18 @@ python scripts/generate.py --course "交互产品开发" --no-pdf
 ```
 
 系统将：
-1.  读取 `course.yaml`。
-2.  加载原始模板（`Syllabus.docx` 等）。
-3.  通过 XML 引擎替换 `XXXX` 占位符为实际数据。
-4.  在课程目录下生成 `Output` 文件夹，包含归档格式命名的文档：
+1.  **判定分流**：检测课程根目录是否存在 `course_internship.yaml`。若存在，直接跳入**实习指导隔离管线**（生成实习申请表、巡查记录表、巡查统计表等），并结束流程。
+2.  若为标准课程，通过 `course_loader.py` 合并课程数据子文件（或回退为直接读取单体 `course.yaml`）。
+3.  **教务合规强校验**：审计并拦截不合规配置（如实验项目缺少 `steps` 等），若不合规直接报错退出。
+4.  加载各生成器的原始模板（`Syllabus.docx` 等）。
+5.  通过 XML 引擎替换 `XXXX` 占位符为实际数据。
+6.  在课程目录下生成 `Output` 文件夹，包含归档格式命名的文档：
     *   `{archive_id}{教师}+{年级}+{专业}+《{课程}》+教学大纲.docx`
     *   `{archive_id}{教师}+{年级}+{专业}+{班级}+《{课程}》+教学进度表.docx`
     *   `教案_第X周_xxx.docx` (分周版) + `...教案.docx` (归档命名合并版)
-5.  **默认同步 PDF 转换**：通过 LibreOffice headless 将最终交付文件转换为 PDF（排除散页等中间文件）。
+    *   `...期末考查评分标准.docx` / `...期末考查试卷A/B.docx` / `...自查表.docx` 等考核材料
+
+7.  **默认同步 PDF 转换**：通过 LibreOffice headless 将最终交付文件转换为 PDF（排除散页等中间文件）。
 
 ## 阶段四：人工复核 (Human Review)
 
@@ -88,8 +93,9 @@ python scripts/verify_syllabus.py "Output/2025-2026-2_教学大纲_xxx.docx"
 *   **解决**: 在模板中删除该 XXXX 后重新输入，或在代码中对该段落先调用 `_merge_runs()`。
 
 ### 3. 输出中有 `{{ }}` 残留
-模板仍包含旧的 Jinja 变量。当前方案已弃用 docxtpl。
-*   **解决**: 在模板中将所有 `{{ variable }}` 替换为 `XXXX`，并更新代码中的替换逻辑。
+模板仍包含未解析的 Jinja 变量（如 `{%p for ... %}` 或 `{{ tag }}`）。
+*   **常见原因**: Word 将大括号和内部变量名强行拆分到了不同的 `<w:t>` 文本节点（跨 run 分裂），导致基础的字符串替换失效。
+*   **解决**: 目前核心引擎（含实习生成器）已全盘切换至 `docx_engine.replace_jinja_tag()` 原生处理方案，该方案自带 `merge_runs` 预处理。如果依然出现此问题，请检查模板中 `{{` 和 `}}` 之间是否有异常的拼写检查红线（SpellCheck），选中该段落并【忽略拼写检查】即可修复。
 
 ### 4. 勾选框/课程性质显示异常
 *   确认 `course.yaml` 中 `nature` 值为规范 5 类之一。
@@ -113,7 +119,7 @@ python scripts/verify_syllabus.py "Output/2025-2026-2_教学大纲_xxx.docx"
 3. 在生成脚本中添加替换逻辑（通过位置上下文定位 XXXX）。
 
 ### 3. 引入新模板
-为新文档类型创建 Generator 目录（如 `07_xxx_Generator/`），遵循通用规范（参见 `Spec_Global.md` §5）。
+为新文档类型创建 Generator 目录（如 `07_Internship_Generator/`），遵循通用规范（参见 `Spec_Global.md` §5）。
 
 ---
 
@@ -145,6 +151,6 @@ python scripts/verify_syllabus.py "Output/2025-2026-2_教学大纲_xxx.docx"
 
 归档命名已集成到生成器中，生成的文档自动采用 `Spec_Global.md §8` 格式命名：
 
-1. 确认 `course.yaml` 中每个班级的 `classes[].archive_id` 已填写（每学期由系部汇总表分配）
+1. 确认课程数据子文件中每个班级的 `classes[].archive_id` 已填写（每学期由系部汇总表分配）
 2. 运行 `python scripts/generate.py --course "课程名"` 即可获得归档命名的文档 + PDF 副本
 3. PDF 默认自动生成，无需手动转换。如需关闭可加 `--no-pdf`

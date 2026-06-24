@@ -1,7 +1,18 @@
 # 数据字典 (Data Dictionary)
 
-本文档定义了 `course.yaml` 的数据结构。
+本文档定义了课程数据的结构。
 > **注意**：本文档仅作为参考。数据的**单一事实来源 (SSOT)** 是 `scripts/course_schema.py`。由此脚本定义的规则（如必填项、逻辑校验）为准。
+
+> **ADR-044 数据源拆分**（自 2026-05-22 起生效）：课程端的单体 `course.yaml` 已按语义域拆分为以下子文件。原 `course.yaml` 保留为索引文件（含 `includes` 列表），由 `course_loader.py` 透明合并为与旧版完全一致的字典结构，生成器无需感知拆分细节。
+>
+> | 子文件 | 语义域 | 本文档对应章节 |
+> |--------|--------|----------------|
+> | `course_meta.yaml` | course, teacher, student_analysis, semester_config, agent | §2, §3, §7 |
+> | `course_objectives.yaml` | objectives | （课程目标） |
+> | `course_textbooks.yaml` | textbooks | §6 |
+> | `course_calendar.yaml` | calendar | §4 |
+> | `course_experiments.yaml` | experiments | §5 |
+> | `course_assessment.yaml` | assessment_methods, exams | §8, §6(考核) |
 
 
 ## 1. 根对象 (Root)
@@ -19,6 +30,7 @@
 
 
 ## 2. 课程基本信息 (`course_info`)
+来源子文件：`course_meta.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 | 使用处 (Used In) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -47,6 +59,7 @@
 | 字段名 | 类型 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
 | `name` | String | "23级数字媒体艺术1班" | 班级名称 |
+| `student_count` | Number | 45 | 班级实际人数，用于自查表等考务材料的自动统计 |
 | `schedule_time` | String | "周一1-2节" | 默认上课时间 |
 | `classroom` | String | "A101" | 教室 (可选) |
 | `week_range` | String | "10-18" | （Schema 2.2）实际教学自然周跨度。生成器会自动将 `calendar[0]` 偏移到该周 |
@@ -57,6 +70,7 @@
 
 
 ## 3. 教师信息 (`teacher`)
+来源子文件：`course_meta.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 | 使用处 (Used In) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -69,6 +83,7 @@
 
 
 ## 4. 教学周历 (`calendar`)
+来源子文件：`course_calendar.yaml`
 
 这是一个列表，每个元素代表一周。
 
@@ -112,6 +127,7 @@
 | `ideology` | String | "结合国家战略..." | 课程思政融入点，仅在 `stage=讲授` 时有效（映射到教案 R12【课程思政融入点】） |
 
 ## 5. 实验项目 (`experiments`)
+来源子文件：`course_experiments.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 | 使用处 (Used In) |
 | :--- | :--- | :--- | :--- | :--- |
@@ -119,11 +135,15 @@
 | `name` | String | "Web交互基础" | 实验名称 | 全局 |
 | `type` | String | "验证性" | 实验类型 (验证性/综合性/设计性) | 大纲, 实验项认定表 |
 | `hours` | Number | 4 | 实验学时 | 大纲, 实验项认定表 |
-| `group_size` | Number | 1 | 每组人数 | 实验项认定表 |
-| `requirement` | String | "必做" | 必做/选做 | 大纲 |
+| `group_size` | Number / String | 1 | 每组人数。若填写纯数字，生成器会自动追加"人"后缀；缺省时默认注入"1人" | 实验项认定表 |
+| `requirement` | String | "必做" | 必做/选做。缺省时默认注入"必做" | 大纲 |
+
+> [!CAUTION]
+> **强合规校验规则 (教务新规)**：从 Schema 2.5 开始，每个实验项目必须在对应的 `exp_x.yaml` 增量配置中提供具体的 `steps`（步骤详情）或 `guide_text`（指导书文本占位）。若两者皆为空，生成引擎（`generate.py`）将直接报错拦截，拒绝生成残缺的实验指导书。
 
 
 ## 6. 教材与参考书 (`textbooks`)
+来源子文件：`course_textbooks.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
@@ -159,6 +179,7 @@ textbooks[].toc      ──┘
 
 
 ## 7. 学期配置 (`semester_config`)
+来源子文件：`course_meta.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
@@ -166,6 +187,7 @@ textbooks[].toc      ──┘
 
 
 ## 8. 试卷结构 (`exams`)
+来源子文件：`course_assessment.yaml`
 
 **根对象**: `exams.final_exam` (List[ExamPaper])
 
@@ -177,7 +199,17 @@ textbooks[].toc      ──┘
 | `total_score` | Number | 100 | 卷面总分 |
 | `sections` | List | - | 大题列表 (见下) |
 
-### 8.2 大题 (`ExamSection`)
+### 8.2 实操类 A/B 卷数据 (`PracticePaperVersion`)
+当 `type`="practice_ab" 时，`practice_paper.ab_versions` 下的具体版本数据结构。
+
+| 字段名 | 类型 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `practice_theme` | String | "为图书馆设计一个..." | 创作主题（必须是一段描述具体设计/开发项目的详细文本；A/B卷必须具有平行的差异化场景） |
+| `practice_requirements` | String | "需要包含登录、首页..." | 基本要求 |
+| `practice_deliverables` | String | "提交ZIP包..." | 提交物要求及防抄袭条款 |
+| `example_images` | List[String] | `["./A卷参考1.jpg", "./A卷参考2.jpg"]` | 参考图片路径列表。可选，生成器会自动横向平铺渲染到文档末尾。 |
+
+### 8.3 大题 (`ExamSection`)
 | 字段名 | 类型 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
 | `section_name` | String | "一、选择题" | 大题名称 |
@@ -195,6 +227,7 @@ textbooks[].toc      ──┘
 
 
 ## 6. 考核方式 (`assessment_methods`)
+来源子文件：`course_assessment.yaml`
 
 | 字段名 | 类型 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
@@ -224,3 +257,64 @@ textbooks[].toc      ──┘
 | `ratio` | Number | 20 | 占平时成绩的比例 (%) | 大纲 |
 | `desc` | String | "缺勤扣分..." | 评分标准 | 大纲 |
 
+## 9. 实习指导材料 (Internship)
+*(非标准课程 Schema，独立于 CourseSchema)*
+
+由于“实习指导”等课程结构与传统课程差异极大（如无明确排课表、考核形式主要依靠巡查等），故通过独立的 `InternshipSchema` 进行专门管理。为确保能够正确无误地渲染至 XML 模板，所有字段均被强制约定为**字符串类型 (`str`)**。
+
+> [!WARNING]
+> **Anti-Null 防御规则**：
+> JSON/YAML 数据在喂给引擎前，所有 `score_*`、`teacher_advice`、`note` 等随时可能缺省的字段，必须转换为**空字符串 `""`**，严禁使用 `null`，否则会引发解析崩溃。
+> 
+> **多行文本换行机制**：
+> `intern_content` 与 `teacher_advice` 等多行文本的换行，现已由底层的纯 Python-docx 引擎（`docx_engine.py`）自动拦截 `\n` 并转码为 `<w:br/>`。无需前端做特殊处理。
+>
+> **扩写机制**：
+> `intern_content` 若字数过少，目前推荐的 SSOT 流程是直接在 YAML 数据层面进行专门扩写，而不是在读取/生成脚本中进行拦截和替换。
+
+### 9.1 全局字段 (Global Data)
+
+| 字段名 | 类型 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `college` | String | "计算机学院" | 学院 |
+| `major` | String | "软件工程" | 专业 |
+| `school_teacher` | String | "林昕" | 校内指导教师（消除早期版本中 teacher 的指代歧义） |
+| `teacher_advice` | String | "该生表现优异..." | 巡查教师意见建议及改进措施 |
+| `teacher_signature` | String | "林昕" | 巡查教师签字 |
+
+### 9.2 实习学生记录数组 (`students`)
+
+| 字段名 | 类型 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `sequence_number` | String | "1" | 巡查记录详情表在统计表中的关联序号 |
+| `student_name` | String | "张三" | 实习学生姓名 |
+| `student_id` | String | "202200001" | 学号 |
+| `student_phone` | String | "13800138000" | 学生联系电话 |
+| `student_email` | String | "student@example.com" | 学生电子邮箱 |
+| `class_name` | String | "22级软件1班" | 班级 |
+| `base_name` | String | "广州某公司" | 巡查基地（单位） |
+| `base_address` | String | "广州市天河区xxx" | 实习单位详细地址 |
+| `position` | String | "前端开发实习生" | 实习岗位 |
+| `intern_content` | String | "深入参与..." | 实习内容（多行文本需处理换行，如字数太少应在 YAML 直接扩写） |
+| `intern_start_end` | String | "2026年2月2日 至 2026年5月31日" | 实习起止时间（由起止日期自动格式化而来） |
+| `enterprise_teacher`| String | "李四" | 企业指导教师（消除歧义专用） |
+| `enterprise_phone`| String | "13811112222" | 实习单位联系电话 |
+| `decentralized_apply_student_date` | String | "2026年1月27日" | 学生申请签署日期 |
+| `decentralized_apply_enterprise_date` | String | "2026年1月28日" | 企业审批签署日期 |
+| `decentralized_apply_school_date` | String | "2026年1月29日" | 学院审批签署日期 |
+| `inspect_year` | String | "2026" | 巡查时间-年 |
+| `inspect_month` | String | "06" | 巡查时间-月 |
+| `inspect_day` | String | "19" | 巡查时间-日 |
+| `inspect_date` | String | "2026年6月19日" | 巡查时间全称 |
+| `score_safety` | String | "10" | 安全纪律遵守情况得分（满分10） |
+| `score_attendance` | String | "15" | 出勤率得分（满分15） |
+| `score_learning` | String | "15" | 学习能力得分（满分15） |
+| `score_teamwork` | String | "15" | 团队意识得分（满分15） |
+| `score_attitude` | String | "15" | 工作态度得分（满分15） |
+| `score_task` | String | "15" | 任务完成情况得分（满分15） |
+| `score_suitability` | String | "10" | 适岗程度得分（满分15） |
+| `score_total` | String | "95" | 总分（满分100） |
+| `note` | String | "" | 备注 |
+
+> [!TIP]
+> 如果当前没有记录（`students: []`），前端处理逻辑应当手动植入一个全部为空的空对象字典，作为备用渲染行，避免在表格遍历时报索引越界或留下空白的非法表头。

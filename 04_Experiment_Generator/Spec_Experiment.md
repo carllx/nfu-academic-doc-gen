@@ -33,7 +33,7 @@
 
 ## 2. 数据源规范 (Data Source)
 
-### 2.1 `experiments` 字段（`course.yaml`）
+### 2.1 `experiments` 字段（实际位于 `course_experiments.yaml`）
 
 > **SSOT**：`scripts/course_schema.py` 中的 `ExperimentItem` 模型。以下为快速参考。
 
@@ -43,22 +43,25 @@
 | `name` | String | ✅ | 实验名称（对应大纲编号） |
 | `type` | String | ✅ | 实验类型：验证性 / 综合性 / 设计性 / 演示性 |
 | `hours` | Number | ✅ | 实验学时 |
-| `group_size` | Number | ✅ | 每组人数（alias: `group`）|
-| `requirement` | String | ✅ | 必做 / 选做 |
+| `group_size` | Number / String | ✅ | 每组人数（alias: `group`）。**注意：若填入纯数字，生成时会自动加"人"后缀；缺省时默认注入"1人"**|
+| `requirement` | String | ✅ | 必做 / 选做。**缺省时默认注入"必做"** |
 | `objectives` | String | ❌ | 实验目的（多行，`（一）（二）` 分项；用于指导书「一、实验目的」及报告封面「一、实验目的」节）|
 | `equipment` | String | ❌ | 实验设备与环境（多行，通常「硬件+软件」2 行；用于「二、实验设备与环境」/「二、实验条件（环境）」节）|
-| `requirements` | String | ❌ | 实验要求（多行，`（一）（二）` 分项；用于「三、实验要求」节）|
-| `methods` | String | ❌ | 实验步骤与要点 / 实验方法（原理）（多行；验证/演示性含详细步骤+图示；设计/综合性含创作框架；用于「四、实验步骤与要点」及「三、实验方法（原理）」节）|
+| `requirements` | String | ❌ | 实验要求（多行，`（一）（二）` 分项；用于指导书「三、实验要求」节）|
+| `method_theory` | String | ❌ | 实验方法（原理）（多行；用于指导书与报告的「三、实验方法（原理）」节）|
+| `methods` | String | ❌ | 实验步骤与要点（多行；用于指导书「四、实验步骤与要点」节）|
 | `summary` | String | ❌ | 实验内容简介（1-3 句；用于认定表「实验内容简介」单元格）|
 | `conclusions` | String | ❌ | 实验结论（多行；验证/演示性含实验原理+数据表格；综合/设计性含作品说明；用于「五、实验结论」节）|
 | `questions` | String | ❌ | 思考题（多行，`（一）（二）` 分项，2-4道；**仅**指导书「六、思考题」节，实验1-2适用，实验3、综合项目无此节）|
 
-> **字段来源说明**：`objectives`/`methods`/`equipment` 对应过往项目 `course_config.yaml` 里的 `experiment_objectives`/`experiment_methods`/`experiment_equipment`，本项目统一简化字段名。`requirements`/`conclusions`/`questions`/`summary` 为本项目新增字段。无此字段时，对应节保留空白占位行供教师手填。
+> **字段来源说明**：`objectives`/`methods`/`equipment` 对应过往项目 `course_config.yaml` 里的 `experiment_objectives`/`experiment_methods`/`experiment_equipment`，本项目统一简化字段名。`requirements`/`conclusions`/`questions`/`summary`/`method_theory` 为本项目新增字段。无此字段时，对应节保留空白占位行供教师手填。
 
 > **`summary` 字段说明**：仅用于认定表（Template 2），对应注释"实验内容简介"。内容应为 1-3 句概括性的描述，区别于 `objectives` 的目的描述。
 
+> **学时-数量强制捆绑约束**（重要）：底层 Schema 严格校验，当课程实践学时为 40 时，必须恰好设置 3 个实验；当为 60 时，必须恰好设置 4 个实验。所有实验的学时总和必须严格等于课程实践总学时。
+
 ```yaml
-# course.yaml 示例
+# course_experiments.yaml 示例
 experiments:
   - id: 1
     name: "交互产品设计（一）"
@@ -105,32 +108,40 @@ experiments:
 *   **输出目录**：`output/实验材料/`
 *   **优雅降级**：`experiments` 字段不存在时（如实习指导课程），生成器静默跳过，不报错。
 
+#### 4.1.1 数据清洗与适配层 (ExperimentDataAdapter)
+在进入 `gen_experiment_xml` 渲染前，`generate.py` 会调用 `scripts/utils/experiment_adapter.py` 对数据进行安全清洗：
+1. **全局学时对账**：自动对清洗后所有实验的 `hours` 求和，并与 `course.hours.practice` 比对。若不一致则输出警告并拦截静默错误。
+2. **防崩溃降级与默认值注入**：对于缺失核心键的字典赋予安全默认值以消除 `KeyError`。并自动为 `requirement` 填入"必做"，为 `group_size` 注入"1人"等默认配置。
+3. **XML 污染清洗**：强制裁剪 `_overlay` 中的富文本节点（如 `grading_rubric`），并将 `steps` 简化为安全结构，防止引发底层 XML 闭合异常。
+4. **教务新规强校验 (Schema 2.5)**：引擎会强制检查每个实验是否包含了具体的实验步骤 (`steps`) 或指导书替换文本 (`guide_text`)。若检测到二者皆空，则生成器直接报错退出，强硬拦截残缺的实验指导书生成。
+
 ### 4.2 各模板填充逻辑
 
 #### Template 1 — 实验报告封面（`Template_Exp_Report.docx`）
 
-**📌 填充责任分工**（见 §4.4 详细说明）
+**📌 填充责任分工 (两阶段生成机制)**
+所有的实验（包括期末综合项目）统一使用六大项格式。第一阶段只发空表给学生填，第二阶段等成绩出来后通过 Python 注入老师签名和评分。
 
-| 占位符标签 | 注释说明 | 数据源 | 是否程序预填 |
+| 占位符标签 | 注释说明 | 数据源 | 阶段 |
 |-----------|---------|--------|:-----------:|
-| 项目名称 | 与指导书内容一致，由任课教师撰写 | `experiments[i].name` | ✅ |
-| 学院名称 | — | `course.department`（固定：设计学院） | ✅ |
-| 专业班级 | — | `course.major`（专业） + 班级信息 | ✅ |
-| 学生学号 | 学生填写内容 | — | ❌ **保留 XXXX** |
-| 学生姓名 | 学生填写内容 | — | ❌ **保留 XXXX** |
-| 授课教师 | 任课教师撰写，避免学生写错 | `teacher.name` | ✅ |
-| 实验日期 | 必须是课程当天，非节假日；从 `calendar[].exp_id` 查找实验对应周次，按班级 `week_range` + `excluded_weeks` 映射为实际教学周日期 | `_get_class_experiment_dates()` | ✅ |
-| 实验地点 | 与课程表内地点一致，更换需调整；由任课教师撰写 | `course.location`（若有）| ✅ |
-| 指导教师 | 由任课教师撰写 | `teacher.name` | ✅ |
-| 同组人员 | 学生填写；个人实验不填 | — | ❌ **保留 XXXX** |
-| 一、实验目的 | 由任课教师撰写 | `experiments[i].objectives` | ✅（若有数据）|
-| 二、实验条件（环境） | 由任课教师撰写 | `experiments[i].equipment` | ✅（若有数据）|
-| 三、实验方法（原理） | 由任课教师撰写 | `experiments[i].methods` | ✅（若有数据）|
-| 四、实验内容（步骤） | 学生填写，不少于500字，图文并茂 | — | ❌ **保留 XXXX** |
-| 五、实验结果分析 | 学生填写 | — | ❌ **保留 XXXX** |
-| 六、成绩评定·评语 | 任课教师评语，不少于100字 | — | ❌ **留白** |
-| 六、成绩评定·评分 | 与期末/平时成绩单一致 | — | ❌ **留白** |
-| 六、指导教师签字 | 可以使用电子签 | — | ❌ **留白** |
+| 项目名称 | 与指导书内容一致 | `experiments[i].name` | 预填 |
+| 学院名称 | — | `course.department` | 预填 |
+| 专业班级 | — | `course.major` + 班级 | 预填 |
+| 学生学号 | 学生线下手写或电脑填 | — | 留白 `""` |
+| 学生姓名 | 学生线下手写或电脑填 | — | 留白 `""` |
+| 授课教师 | 避免学生写错 | `teacher.name` | 预填 |
+| 实验日期 | 推算的实际周次日期 | `_get_class_experiment_dates()` | 预填 |
+| 实验地点 | 与课程表一致 | `course.location` | 预填 |
+| 指导教师 | — | `teacher.name` | 预填 |
+| 同组人员 | 小组实验手写 | — | 留白 `""` |
+| 一、实验目的 | 教师提前拟定 | `experiments[i].objectives` | 预填 |
+| 二、实验条件（环境） | 教师提前拟定 | `experiments[i].equipment` | 预填 |
+| 三、实验方法（原理） | 教师提前拟定 | `experiments[i].method_theory` | 预填 |
+| 四、实验内容（步骤） | 学生自己写，允许图文并茂 | — | 留白 `""` |
+| 五、实验结果分析 | 学生自己写，含反思/Design Statement | — | 留白 `""` |
+| 六、成绩评定·评语 | 期末阶段由系统读取成绩单批量注入 | — | 二阶段注入 |
+| 六、成绩评定·评分 | 期末阶段由系统读取成绩单批量注入 | — | 二阶段注入 |
+| 六、指导教师签字 | 电子签名图片 (`InlineImage`) | 系统素材库图片 | 二阶段注入 |
 
 #### Template 2 — 实验认定表（`Template_Exp_Recognition.docx`）
 
@@ -205,13 +216,10 @@ experiments:
 | 一、实验目的 | `objectives` | 实验 1-4 全部 |
 | 二、实验设备与环境 | `equipment` | 实验 1-4 全部 |
 | 三、实验要求 | `requirements` | 实验 1-4 全部 |
-| 四、实验步骤与要点 | `methods` | 实验 1-4 全部 |
-| 五、实验结论 | `conclusions` | 实验 1-4 全部 |
-| **六、思考题** | `questions` | **仅实验 1-2**；实验 3 和综合项目**无此节** |
+| 四、实验步骤与要点 | `methods` (与代码/图文片段结合) | 实验 1-4 全部 |
 
-*   **多行文本**：使用 `fill_multiline()` 逐段填充，保留原始 `pPr`。
-*   **无数据时**：保留空白 XXXX 占位段落，供教师后续手填。
-*   **章节模板克隆**：使用 `copy.deepcopy()` 克隆首节结构，动态生成后续节，**不手动构造 XML 格式属性**。
+*   **技术栈**：使用 `docxtpl` 渲染，支持 `InlineImage` 和子模板渲染，彻底废弃底层纯文本 `lxml` 替换。
+*   **思考题取消**：不再保留原先的“六、思考题”模块，反思统一体现在报告封面的“五、实验结果分析”中。
 
 ### 4.3 输出命名规范
 
@@ -259,6 +267,8 @@ output/实验材料/
 | 12 | 认定表日期写死或与开学时间不符 | 日期未从 semester 推断 | 从 `semester` 字段解析第一周周一日期，格式为「XXXX年X月X日」|
 | 13 | 多班课程报告封面日期写错 | 旧版使用固定等间距公式 `(exp_id-1)*2` 推算实验周次，完全忽略 `calendar[].exp_id` 实际关联 | 从 `calendar` 查找 `exp_id` 匹配条目的 calendar 序号，通过 `week_range` + `excluded_weeks` 映射为班级实际教学周，再取该周上课日期。每班各自生成一套报告封面（2026-02-28 修复） |
 | 14 | 认定表漏生成（只生成实验4的）| 触发逻辑误以为仅期末综合项目触发 | 遍历全部 `experiments`，凡 `type in ['综合性','设计性']` 均触发，每实验各1份 |
+| 15 | 指导书一览表空缺开出要求与人数 | `course.yaml` 中通常不会填写此二项 | 底层 Word 模板表头被强制固定为“实验序号/项目名称/实验类型/开出要求/每组人数/学时”，并在脚本层强注入 `requirement="必做"` 和 `group_size="1人"` 的默认值兜底 |
+| 16 | 40/60 学时下实验数量错乱 | AI 生成实验数据时脱离了大纲实践总学时的约束 | Pydantic 层新增了 `40h->3次` 和 `60h->4次` 的强矩阵限制。大实验（Experiment）与课后练习（Practice）彻底划清界限。 |
 
 ---
 
@@ -269,7 +279,7 @@ output/实验材料/
 | **大纲（01_Syllabus）** | `experiments` 实验名称、类型、学时须与大纲实践章节严格一致 |
 | **成绩单（05_Assessment）** | 实验 1-3 对应平时成绩；实验 4 对应期末综合分，权重在 `assessment_methods` 中定义 |
 | **课程目标** | 实验认定表的能力目标应与 `objectives` 中的能力目标维度对应（可选追踪） |
-| **课程 YAML** | `信息可视化`、`交互产品开发` 的 `experiments` 字段须在 `course.yaml` 中完整定义本 Spec 所列字段后才能驱动生成 |
+| **课程 YAML** | `信息可视化`、`交互产品开发` 的 `experiments` 字段须在 `course_experiments.yaml` 中完整定义本 Spec 所列字段后才能驱动生成 |
 
 ---
 

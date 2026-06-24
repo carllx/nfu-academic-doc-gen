@@ -5,9 +5,10 @@
 
 ## 核心特性
 *   **单一数据源**：所有文档基于同一份 `course.yaml` 生成，确保数据一致性。
-*   **Schema 2.5**：支持**多班级排课**、**停课/调课自适应**、**OBE 目标映射数组**、**班级归档序号**与**试卷结构定义**。
+*   **Schema 2.5**：支持**透明数据合并 (`course_loader`)**、**多班级排课**、**停课/调课自适应**、**OBE 目标映射数组**、**班级归档序号**与**试卷结构定义**。
 *   **XML 直操模板**：通过 `lxml` 直接操作 Word XML，深克隆保全 100% 原始格式（已弃用 docxtpl/Jinja2）。
 *   **进度表动态行数**：自动根据 `week_range` 实际周数增删表格行，不再固定 18 行。
+*   **强合规校验**：生成引擎集成数据审计与拦截器（如 `experiment_adapter.py`，拦截无步骤实验），杜绝残缺材料。
 *   **领域驱动**：按输出成果（大纲、进度表、教案等）组织生成器包。
 *   **规范集成**：每个生成器包内含对应的编写规范 (`Spec_*.md`)。
 *   **云盘归档命名**：内置归档命名规范（Spec_Global §8），支持按教务汇总表格式自动重命名。
@@ -26,6 +27,7 @@
 ├── 04_Experiment_Generator/# [生成器] 实验材料 (指导书/报告/认定表)
 ├── 05_Assessment_Generator/# [生成器] 考核材料 (试卷/分析表)
 ├── 06_Presentation_Generator/ # [生成器] PPT 课件
+├── 07_Internship_Generator/ # [生成器] 实习指导材料
 ├── .agent/workflows/       # Agent 工作流
 │   ├── mailbox_out.md      # 跨项目边界判定 + MSG 投递
 │   ├── mailbox_in.md       # 共享邮箱收件处理
@@ -38,11 +40,12 @@
 │   ├── gen_syllabus_xml.py # 大纲生成器
 │   ├── gen_schedule_xml.py # 进度表生成器
 │   ├── gen_lessonplan_xml.py # 教案生成器
-│   ├── gen_experiment_xml.py # 实验材料生成器
-│   ├── gen_assessment_xml.py # 考核材料生成器
+│   ├── gen_internship_xml.py # 实习材料生成器
+│   ├── convert_csv_to_yaml.py# CSV 数据提取工具
+│   ├── generate_criteria.py  # 考核材料生成器 (新版双核引擎)
 │   ├── pdf_converter.py      # PDF 转换工具 (LibreOffice headless)
 │   ├── audit_course_data.py  # 数据审计 + 人培交叉校验
-│   └── utils/              # 工具库 (日期计算等)
+│   └── utils/              # 工具库 (日期计算/实验洗脱层等)
 └── README.md               # 本文件
 ```
 
@@ -93,6 +96,17 @@ python scripts/generate.py --course "信息可视化" --no-pdf
 *   **Antigravity Agent**
 
 ## 更新日志
+*   **2026-06-20 (实习指导 数据链路修复与架构升级)**:
+    *   **架构升级**: 引入 `course_loader.py` 透明合并层与 `experiment_adapter.py` 实验数据适配层，新增教务合规新规强校验（实验必须含步骤配置）。
+    *   **实习材料**: 修正了 `convert_csv_to_yaml.py` 覆盖数据的问题（已归档脚本），全面将 `course_internship.yaml` 确立为 SSOT，并接入全新的隔离生成管线。
+    *   **引擎替换告警**: 发现了 Jinja 占位符 `{{ tag }}` 在被 Word 跨节点拆分时导致简单 `replace()` 失效的缺陷，现已全盘切换至 `docx_engine` 原生处理方案。
+*   **2026-06-19 (实习指导引擎接入)**:
+    *   新增 `07_Internship_Generator`，专为实习指导类“非标准课程”设计独立生成器。
+    *   引入平行的 `InternshipSchema` 与防断裂 XML 清洗/重铸机制，免疫 `null` 引发的 Word 崩溃。
+*   **2026-06-14 (考核生成器大一统)**:
+    *   恢复了 `Template_Exam_Paper_AB.docx` 和 `Template_Exam_Checklist_AB.docx`，确立了“期末考查评分标准”、“自查表”与“期末试卷”三模板并行的完整考核材料体系。
+    *   重构底层 XML 控制，支持 `example_images` 数组多图渲染及段落自动排版换行。
+    *   移除了大量废弃的 handover 文档至归档区，保证环境清爽。
 *   **2026-02-16 (Automation)**: 
     *   在课程目录下生成 `Output` 文件夹，包含归档格式命名的文档：
     *   `{archive_id}{教师}+{年级}+{专业}+《{课程}》+教学大纲.docx`

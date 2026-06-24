@@ -17,6 +17,7 @@ class ScheduleSegment(BaseModel):
 
 class ClassInfo(BaseModel):
     name: str = Field(..., description="班级名称")
+    student_count: Optional[int] = Field(None, description="班级实际人数，用于自查表等考务材料的自动统计")
     schedule_time: str = Field(..., description="上课时间（默认星期+节次，如'周四2-5节'或'星期日(分段排课)'）")
     schedule_segments: List[ScheduleSegment] = Field([], description="分段排课定义列表（Schema 2.2）")
     week_range: Optional[str] = Field(None, description="教学周次范围，如 '9-18'")
@@ -103,6 +104,16 @@ class Experiment(BaseModel):
     hours: int = Field(..., description="实验学时")
     group_size: int = Field(1, alias="group", description="每组人数") # 'group' in yaml
     requirement: Optional[str] = Field("必做", description="必做/选做")
+    method_theory: str = Field(default="", description="实验方法/原理")
+
+    @validator('type', pre=True)
+    def coerce_experiment_type(cls, v):
+        if v in ('验证性', '演示性'):
+            print(f"  ⚠️  [WARNING] 自动将废弃的实验类型 '{v}' 转换为 '设计性'")
+            return '设计性'
+        if v not in ('设计性', '综合性'):
+            raise ValueError(f"实验类型必须是 '设计性' 或 '综合性'，当前为: {v}")
+        return v
 
 class TextbookChapter(BaseModel):
     """教材目录章节条目 — Phase 2a 新增，用于结构化引用教材章节标题"""
@@ -134,11 +145,22 @@ class ExamSection(BaseModel):
     questions: List[Question] = Field(..., description="题目列表")
     total_score: float = Field(..., description="该大题总分")
 
+class PracticePaperVersion(BaseModel):
+    practice_theme: str = Field(..., description="创作主题（必须是一段描述具体设计/开发项目的详细文本，含应用场景、发挥空间等；A/B卷必须具有平行的差异化场景）")
+    practice_requirements: str = Field(..., description="基本要求（必须基于核心技术点拆分为2-3点专业技能要求，并包含单人原创、不得抄袭等硬性教务条款）")
+    practice_deliverables: str = Field(..., description="提交物要求（必须包含固定的命名规范、超星学习通提交时间/途径及抄袭、旷考/重考惩罚等全套教务规范说明）")
+    example_images: Optional[List[str]] = Field(None, description="参考图片路径列表")
+
+class PracticePaper(BaseModel):
+    ab_versions: dict[str, PracticePaperVersion] = Field(..., description="A/B卷数据映射")
+
 class ExamPaper(BaseModel):
-    name: str = Field(..., description="试卷名称 (A卷/B卷)")
+    name: str = Field(..., description="试卷名称 (A卷/B卷/期末考查)")
+    type: str = Field("standard", description="试卷类型，如 standard 或 practice_ab")
     duration: int = Field(120, description="考试时长 (分钟)")
     total_score: float = Field(100, description="卷面总分")
-    sections: List[ExamSection] = Field(..., description="试卷结构")
+    practice_paper: Optional[PracticePaper] = Field(None, description="实操类试卷配置")
+    sections: Optional[List[ExamSection]] = Field(None, description="试卷结构")
 
 class ExamConfig(BaseModel):
     final_exam: List[ExamPaper] = Field(..., description="期末试卷列表 (A卷, B卷)")
@@ -150,10 +172,10 @@ class AssessmentItem(BaseModel):
 
     @validator('name')
     def check_name_format(cls, v):
-        """ADR 005: name 格式应为 '章节测试N' 或 '命题测试N'"""
+        """ADR 005: name 格式应符合 '单数无后缀，复数中文序号' 或 '期末考核' 等规范，此处不再强制数字"""
         import re
-        if not re.match(r'^(章节测试|命题测试)\d+$', v) and v != '考勤':
-            print(f"  ⚠️  [WARNING] AssessmentItem.name='{v}' 不符合命名规范 (应为 '章节测试N' 或 '命题测试N')")
+        if not re.match(r'^(章节测试|命题测试)[一二三四五六七八九十]?$', v) and v not in ('考勤', '期末考核', '课程实验'):
+            print(f"  ⚠️  [WARNING] AssessmentItem.name='{v}' 建议遵循命名规范 (如 '命题测试', '命题测试一', '期末考核')")
         return v
 
     @validator('desc')
@@ -180,11 +202,50 @@ class AssessmentMethods(BaseModel):
         items = values.get('normal_items')
         attendance = values.get('attendance_ratio', 0)
         
+        if attendance != 10.0:
+            raise ValueError(f"考勤占比必须严格为 10% (当前为 {attendance}%)")
+            
         if items and normal is not None:
             total_items = sum(item.ratio for item in items) + attendance
             if abs(total_items - normal) > 0.01:
                  raise ValueError(f"平时成绩各分项(含考勤{attendance}%)比例之和 ({total_items}) 必须等于平时成绩占比 ({normal})")
+                 
+            # 校验平时成绩其余各项 >=5% 且为 5 的倍数
+            for item in items:
+                if item.name == '考勤':
+                    continue
+                if item.ratio < 5 or item.ratio % 5 != 0:
+                    raise ValueError(f"考核分项 '{item.name}' 的比例 ({item.ratio}%) 必须 >= 5% 且为 5 的倍数")
         
+        return values
+
+    @root_validator(skip_on_failure=True)
+    def check_assessment_suffixes(cls, values):
+        items = values.get('normal_items', [])
+        if not items:
+            return values
+            
+        mingti_items = [i for i in items if i.name.startswith('命题测试')]
+        zhangjie_items = [i for i in items if i.name.startswith('章节测试')]
+        
+        def validate_suffix(sub_items, base_name):
+            if len(sub_items) == 1:
+                if sub_items[0].name != base_name:
+                    raise ValueError(f"只有一个{base_name}时，名称不能带后缀，必须精确为 '{base_name}' (当前为 '{sub_items[0].name}')")
+            elif len(sub_items) > 1:
+                for item in sub_items:
+                    suffix = item.name[len(base_name):]
+                    if not suffix or suffix not in list("一二三四五六七八九十"):
+                        raise ValueError(f"有多个{base_name}时，名称必须带中文序号后缀 (如 '{base_name}一')，当前为 '{item.name}'")
+                        
+        validate_suffix(mingti_items, '命题测试')
+        validate_suffix(zhangjie_items, '章节测试')
+        
+        # 检查期末考核命名
+        for item in items:
+            if '期末' in item.name and item.name != '期末考核':
+                raise ValueError(f"期末相关考核必须精确命名为 '期末考核'，当前为 '{item.name}'")
+                
         return values
 
 class ObjectiveMapping(BaseModel):
@@ -273,4 +334,69 @@ class CourseSchema(BaseModel):
             exp_total = sum(e.hours for e in experiments)
             if exp_total > course.hours.practice:
                 raise ValueError(f"实验总学时({exp_total}) 超过了课程实践学时({course.hours.practice})")
+            
+            # 40/60 学时强制矩阵校验
+            prac_hours = course.hours.practice
+            num_exps = len(experiments)
+            if prac_hours == 20 and num_exps != 3:
+                raise ValueError(f"20 实践学时必须恰好有 3 个实验 (当前为 {num_exps} 个)")
+            elif prac_hours == 40 and num_exps != 3:
+                raise ValueError(f"40 实践学时必须恰好有 3 个实验 (当前为 {num_exps} 个)")
+            elif prac_hours == 60 and num_exps != 4:
+                raise ValueError(f"60 实践学时必须恰好有 4 个实验 (当前为 {num_exps} 个)")
+                
+            if num_exps > 0:
+                last_exp = experiments[-1]
+                if last_exp.type != '综合性':
+                    raise ValueError(f"最后一个实验必须是'综合性'实验，当前为 '{last_exp.type}'")
+                    
+                # 检查其他实验是否均为设计性
+                for exp in experiments[:-1]:
+                    if exp.type != '设计性':
+                        raise ValueError(f"除最后一次实验外，其他实验必须是'设计性'，实验 {exp.id} 当前为 '{exp.type}'")
         return values
+
+class InternshipStudent(BaseModel):
+    """实习学生记录"""
+    sequence_number: str = Field(..., description="关联的巡查记录详情表序号")
+    student_name: str = Field(..., description="实习学生")
+    student_id: str = Field(default="", description="学号（分散实习表等需求）")
+    student_phone: str = Field(default="", description="学生电话（分散实习表等需求）")
+    student_email: str = Field(default="", description="学生电子邮箱（分散实习表等需求）")
+    class_name: str = Field(..., description="班级")
+    base_name: str = Field(..., description="巡查基地（单位）")
+    base_address: str = Field(default="", description="实习单位详细地址")
+    position: str = Field(..., description="实习岗位")
+    intern_content: str = Field(..., description="实习内容 (多行文本)")
+    intern_start_end: str = Field(default="", description="实习起止时间（格式化）")
+    enterprise_teacher: str = Field(..., description="企业指导教师")
+    enterprise_phone: str = Field(default="", description="实习单位联系电话")
+    
+    inspect_year: str = Field(..., description="巡查时间-年")
+    inspect_month: str = Field(..., description="巡查时间-月")
+    inspect_day: str = Field(..., description="巡查时间-日")
+    inspect_date: str = Field(..., description="巡查时间全称")
+    
+    score_safety: str = Field(..., description="安全纪律遵守情况得分")
+    score_attendance: str = Field(..., description="出勤率得分")
+    score_learning: str = Field(..., description="学习能力得分")
+    score_teamwork: str = Field(..., description="团队意识得分")
+    score_attitude: str = Field(..., description="工作态度得分")
+    score_task: str = Field(..., description="任务完成情况得分")
+    score_suitability: str = Field(..., description="适岗程度得分")
+    score_total: str = Field(..., description="总分")
+    
+    note: str = Field(..., description="备注")
+
+class InternshipGlobal(BaseModel):
+    """实习全局配置数据"""
+    college: str = Field(..., description="学院")
+    major: str = Field(..., description="专业")
+    school_teacher: str = Field(..., description="校内指导教师")
+    teacher_advice: str = Field(..., description="巡查教师对实习的意见建议及改进措施")
+    teacher_signature: str = Field(..., description="巡查教师签字")
+
+class InternshipSchema(BaseModel):
+    """非标准课程：实习指导专用 Schema (对应 course_internship.yaml)"""
+    global_data: InternshipGlobal = Field(..., alias="global", description="全局数据")
+    students: List[InternshipStudent] = Field(..., description="学生实习记录列表")

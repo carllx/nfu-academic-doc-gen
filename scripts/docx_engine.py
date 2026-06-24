@@ -162,6 +162,13 @@ def merge_runs(p_elem):
 # 2. 文本替换工具
 # ═══════════════════════════════════════════════════════════════════════
 
+def clean_text_for_docx(text: str) -> str:
+    """清理多余的 Markdown 标记和特定禁止符号。"""
+    if not isinstance(text, str):
+        return text
+    return text.replace('**', '').replace('【', '').replace('】', '')
+
+
 def set_run_text(p_elem, text: str):
     """设置段落中第一个 run 的文本。
 
@@ -175,7 +182,7 @@ def set_run_text(p_elem, text: str):
         t = first_run.find(qn('w:t'))
         if t is None:
             t = etree.SubElement(first_run, qn('w:t'))
-        t.text = text
+        t.text = clean_text_for_docx(text)
         t.set(XML_SPACE, 'preserve')
         # 删除多余 run
         for r in runs[1:]:
@@ -189,7 +196,7 @@ def set_run_text(p_elem, text: str):
             if pPr_rPr is not None:
                 r.insert(0, copy.deepcopy(pPr_rPr))
         t = etree.SubElement(r, qn('w:t'))
-        t.text = text
+        t.text = clean_text_for_docx(text)
         t.set(XML_SPACE, 'preserve')
 
 
@@ -201,7 +208,8 @@ def replace_xxxx(p_elem, replacement: str):
     merge_runs(p_elem)
     for t in p_elem.iter(qn('w:t')):
         if t.text and 'XXXX' in t.text:
-            t.text = t.text.replace('XXXX', replacement)
+            cleaned_replacement = clean_text_for_docx(replacement)
+            t.text = t.text.replace('XXXX', cleaned_replacement)
             t.set(XML_SPACE, 'preserve')
 
 
@@ -216,7 +224,8 @@ def replace_jinja_tag(p_elem, tag: str, replacement: str):
         if t.text:
             for pat in patterns:
                 if pat in t.text:
-                    t.text = t.text.replace(pat, replacement)
+                    cleaned_replacement = clean_text_for_docx(replacement)
+                    t.text = t.text.replace(pat, cleaned_replacement)
                     t.set(XML_SPACE, 'preserve')
 
 
@@ -238,6 +247,7 @@ def fill_multiline(p_elem, text: str, clear_list_indent: bool = False, fix_spaci
         set_run_text(p_elem, '')
         return
 
+    text = clean_text_for_docx(text)
     lines = [line.strip() for line in text.split('\n') if line.strip()]
     if not lines:
         set_run_text(p_elem, '')
@@ -326,14 +336,15 @@ def replace_in_runs(p_elem, replacement: str, full_replace: bool = False):
         if runs:
             first_t = runs[0].find(qn('w:t'))
             if first_t is not None:
-                first_t.text = replacement
+                first_t.text = clean_text_for_docx(replacement)
                 first_t.set(XML_SPACE, 'preserve')
             for r in runs[1:]:
                 p_elem.remove(r)
     else:
         for t in p_elem.iter(qn('w:t')):
             if t.text and 'XXXX' in t.text:
-                t.text = t.text.replace('XXXX', replacement)
+                cleaned_replacement = clean_text_for_docx(replacement)
+                t.text = t.text.replace('XXXX', cleaned_replacement)
                 t.set(XML_SPACE, 'preserve')
 
 
@@ -404,6 +415,27 @@ def clone_table_row(table, row_index: int, count: int):
         new_rows.append(new_row)
 
     return new_rows
+
+
+def remove_table_row(table, row_index: int):
+    """删除表格中指定的行。
+
+    用于 40 学时锁死 3 个实验时，裁切掉多余的模板行。
+
+    Args:
+        table: <w:tbl> 元素
+        row_index: 要删除的行索引 (0-based)
+
+    Returns:
+        bool: 是否成功删除
+    """
+    rows = table.findall(qn('w:tr'))
+    if row_index >= len(rows) or row_index < 0:
+        return False
+        
+    row_to_remove = rows[row_index]
+    row_to_remove.getparent().remove(row_to_remove)
+    return True
 
 
 # ═══════════════════════════════════════════════════════════════════════

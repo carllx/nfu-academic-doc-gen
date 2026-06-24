@@ -1,0 +1,90 @@
+# How To: Reindex With Same Tz Nearest
+
+**Difficulty**: Advanced
+**Estimated Time**: 15 minutes
+**Tags**: workflow, integration
+
+## Overview
+
+Workflow: test reindex with same tz nearest
+
+## Prerequisites
+
+**Required Modules:**
+- `datetime`
+- `numpy`
+- `pandas`
+- `pandas._testing`
+
+
+## Step-by-Step Guide
+
+### Step 1: Assign rng_a = date_range(...)
+
+```python
+rng_a = date_range('2010-01-01', '2010-01-02', periods=24, tz='utc')
+```
+
+### Step 2: Assign rng_b = date_range(...)
+
+```python
+rng_b = date_range('2010-01-01', '2010-01-02', periods=23, tz='utc')
+```
+
+### Step 3: Assign unknown = rng_a.reindex(...)
+
+```python
+result1, result2 = rng_a.reindex(rng_b, method='nearest', tolerance=timedelta(seconds=20))
+```
+
+### Step 4: Assign expected_list1 = value
+
+```python
+expected_list1 = ['2010-01-01 00:00:00', '2010-01-01 01:05:27.272727272', '2010-01-01 02:10:54.545454545', '2010-01-01 03:16:21.818181818', '2010-01-01 04:21:49.090909090', '2010-01-01 05:27:16.363636363', '2010-01-01 06:32:43.636363636', '2010-01-01 07:38:10.909090909', '2010-01-01 08:43:38.181818181', '2010-01-01 09:49:05.454545454', '2010-01-01 10:54:32.727272727', '2010-01-01 12:00:00', '2010-01-01 13:05:27.272727272', '2010-01-01 14:10:54.545454545', '2010-01-01 15:16:21.818181818', '2010-01-01 16:21:49.090909090', '2010-01-01 17:27:16.363636363', '2010-01-01 18:32:43.636363636', '2010-01-01 19:38:10.909090909', '2010-01-01 20:43:38.181818181', '2010-01-01 21:49:05.454545454', '2010-01-01 22:54:32.727272727', '2010-01-02 00:00:00']
+```
+
+### Step 5: Assign expected1 = DatetimeIndex(...)
+
+```python
+expected1 = DatetimeIndex(expected_list1, dtype='datetime64[ns, UTC]', freq=None)
+```
+
+### Step 6: Assign expected2 = np.array(...)
+
+```python
+expected2 = np.array([0] + [-1] * 21 + [23], dtype=np.dtype('intp'))
+```
+
+### Step 7: Call tm.assert_index_equal()
+
+```python
+tm.assert_index_equal(result1, expected1)
+```
+
+### Step 8: Call tm.assert_numpy_array_equal()
+
+```python
+tm.assert_numpy_array_equal(result2, expected2)
+```
+
+
+## Complete Example
+
+```python
+# Workflow
+rng_a = date_range('2010-01-01', '2010-01-02', periods=24, tz='utc')
+rng_b = date_range('2010-01-01', '2010-01-02', periods=23, tz='utc')
+result1, result2 = rng_a.reindex(rng_b, method='nearest', tolerance=timedelta(seconds=20))
+expected_list1 = ['2010-01-01 00:00:00', '2010-01-01 01:05:27.272727272', '2010-01-01 02:10:54.545454545', '2010-01-01 03:16:21.818181818', '2010-01-01 04:21:49.090909090', '2010-01-01 05:27:16.363636363', '2010-01-01 06:32:43.636363636', '2010-01-01 07:38:10.909090909', '2010-01-01 08:43:38.181818181', '2010-01-01 09:49:05.454545454', '2010-01-01 10:54:32.727272727', '2010-01-01 12:00:00', '2010-01-01 13:05:27.272727272', '2010-01-01 14:10:54.545454545', '2010-01-01 15:16:21.818181818', '2010-01-01 16:21:49.090909090', '2010-01-01 17:27:16.363636363', '2010-01-01 18:32:43.636363636', '2010-01-01 19:38:10.909090909', '2010-01-01 20:43:38.181818181', '2010-01-01 21:49:05.454545454', '2010-01-01 22:54:32.727272727', '2010-01-02 00:00:00']
+expected1 = DatetimeIndex(expected_list1, dtype='datetime64[ns, UTC]', freq=None)
+expected2 = np.array([0] + [-1] * 21 + [23], dtype=np.dtype('intp'))
+tm.assert_index_equal(result1, expected1)
+tm.assert_numpy_array_equal(result2, expected2)
+```
+
+## Next Steps
+
+
+---
+
+*Source: test_reindex.py:19 | Complexity: Advanced | Last updated: 2026-06-02*

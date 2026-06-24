@@ -1,0 +1,86 @@
+# How To: Attnamestrange Timdelta Zero Same Dates Returns True
+
+**Difficulty**: Intermediate
+**Estimated Time**: 10 minutes
+**Tags**: workflow, integration
+
+## Overview
+
+Workflow: test attNameStrange timdelta zero same dates returns true
+
+## Prerequisites
+
+**Required Modules:**
+- `datetime`
+- `networkx`
+- `networkx.algorithms`
+
+
+## Step-by-Step Guide
+
+### Step 1: Assign G1 = self.provide_g1_topology(...)
+
+```python
+G1 = self.provide_g1_topology()
+```
+
+**Verification:**
+```python
+assert gm.subgraph_is_isomorphic()
+```
+
+### Step 2: Assign temporal_name = 'strange'
+
+```python
+temporal_name = 'strange'
+```
+
+### Step 3: Assign G1 = put_same_time(...)
+
+```python
+G1 = put_same_time(G1, temporal_name)
+```
+
+### Step 4: Assign G2 = self.provide_g2_path_3edges(...)
+
+```python
+G2 = self.provide_g2_path_3edges()
+```
+
+### Step 5: Assign d = timedelta(...)
+
+```python
+d = timedelta()
+```
+
+### Step 6: Assign gm = iso.TimeRespectingDiGraphMatcher(...)
+
+```python
+gm = iso.TimeRespectingDiGraphMatcher(G1, G2, temporal_name, d)
+```
+
+**Verification:**
+```python
+assert gm.subgraph_is_isomorphic()
+```
+
+
+## Complete Example
+
+```python
+# Workflow
+G1 = self.provide_g1_topology()
+temporal_name = 'strange'
+G1 = put_same_time(G1, temporal_name)
+G2 = self.provide_g2_path_3edges()
+d = timedelta()
+gm = iso.TimeRespectingDiGraphMatcher(G1, G2, temporal_name, d)
+assert gm.subgraph_is_isomorphic()
+```
+
+## Next Steps
+
+
+---
+
+*Source: test_temporalisomorphvf2.py:175 | Complexity: Intermediate | Last updated: 2026-06-02*

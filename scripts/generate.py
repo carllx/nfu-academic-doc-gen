@@ -12,6 +12,7 @@ sys.path.append(str(project_root))
 
 from scripts.utils.semester_utils import SemesterDateCalculator, HolidayManager
 from scripts.course_schema import CourseSchema
+from scripts.utils.experiment_adapter import sanitize_experiment_data
 from scripts.gen_syllabus_xml import gen_syllabus as gen_syllabus_xml
 from scripts.gen_schedule_xml import gen_schedule as gen_schedule_xml
 from scripts.gen_experiment_xml import gen_experiment as gen_experiment_xml
@@ -79,7 +80,8 @@ def generate_documents(course_dir_name: str, base_dir: Path, output_pdf: bool = 
     # 1. Locate Course Directory
     potential_roots = [
         base_dir / "2025-2026-2 课程" / course_dir_name,
-        base_dir.parent / "2025-2026-2 课程" / course_dir_name
+        base_dir.parent / "2025-2026-2 课程" / course_dir_name,
+        Path("/Users/yamlam/Documents/nfu - 教务/2025-2026-2") / course_dir_name
     ]
     
     course_root = None
@@ -92,12 +94,41 @@ def generate_documents(course_dir_name: str, base_dir: Path, output_pdf: bool = 
         print(f"❌ Course directory not found for: {course_dir_name}")
         return
 
-    config_path = course_root / "course.yaml"
     print(f"📂 Processing: {course_dir_name}")
-    print(f"📄 Config: {config_path}")
 
-    # 2. Load Data
-    data = load_yaml(config_path)
+    # [New Branch] 检查是否为实习指导课程
+    internship_yaml = course_root / "course_internship.yaml"
+    if internship_yaml.exists():
+        print("📝 Detected Internship Configuration (course_internship.yaml). Bypassing standard generation...")
+        from scripts.gen_internship_xml import generate_internship_docs
+        success = generate_internship_docs(str(course_root))
+        
+        if success and output_pdf:
+            from scripts.pdf_converter import batch_convert_to_pdf
+            output_dir = course_root / "Output"
+            final_docx = _collect_final_docx(output_dir)
+            if final_docx:
+                batch_convert_to_pdf(final_docx)
+            else:
+                print("  ⚠️ 未找到需要转换的 docx 文件")
+                
+        print(f"✅ All internship documents generated for {course_dir_name}")
+        return
+
+    # 2. Load Data — 优先使用 course_loader（支持 includes 合并）
+    import importlib.util
+    _loader_path = str(Path(course_root).parent / "course_loader.py") if (Path(course_root).parent / "course_loader.py").exists() else None
+    if _loader_path:
+        _spec = importlib.util.spec_from_file_location("course_loader", _loader_path)
+        _course_loader = importlib.util.module_from_spec(_spec)
+        _spec.loader.exec_module(_course_loader)
+        data = _course_loader.load_course(str(course_root))
+        print(f"📄 Config: {course_root / 'course.yaml'} (via course_loader)")
+    else:
+        # 回退：无 course_loader 时走旧路径
+        config_path = course_root / "course.yaml"
+        data = load_yaml(config_path)
+        print(f"📄 Config: {config_path}")
     if not data:
         return
 
@@ -251,7 +282,19 @@ def generate_documents(course_dir_name: str, base_dir: Path, output_pdf: bool = 
         if overlay_count:
             print(f"    📋 已加载 {overlay_count} 份实验增量配置 (exp_x.yaml)")
 
+    # 验证所有实验必须有步骤 (合规性新规)
+    for exp in context.get('experiments', []):
+        overlay = exp.get('_overlay', {})
+        steps = overlay.get('steps', [])
+        guide_text = overlay.get('guide_text', [])
+        if not steps and not guide_text:
+            print(f"\n❌ [ERROR] 实验 '{exp.get('name')}' (ID: {exp.get('id')}) 缺失具体的实验步骤！\n👉 教务新规要求指导书必须包含操作步骤占位。请前往课程工作区的 practices/experiments/exp_{exp.get('id')}.yaml 补充 `steps` 或 `guide_text`。")
+            sys.exit(1)
+
     # 6. Pipelines
+    # [Adapter] 教务端数据清洗适配层与合规对账
+    context = sanitize_experiment_data(context)
+
     output_dir = course_root / "Output"
     output_dir.mkdir(exist_ok=True)
 

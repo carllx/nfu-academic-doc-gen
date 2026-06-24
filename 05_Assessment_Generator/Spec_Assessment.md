@@ -24,29 +24,45 @@
 ## 5. 数据与模板管理 (Data & Template Management)
 
 ### 5.1 数据源
-*   平时/期末成绩比例必须与 `course.yaml` 的 `assessment_methods` 一致。
+*   平时/期末成绩比例必须与课程数据中的 `assessment_methods` 一致（实际位于 `course_assessment.yaml`）。
     *   **Strict Validation**: `normal_score_ratio + final_score_ratio` 必须严格等于 100%。
-    *   **Strict Validation**: `normal_items` 中各分项比例之和必须严格等于 100%。
-*   期末试卷结构/题目在 `course.yaml` 的 `exams.final_exam` 中定义。
+    *   **Strict Validation**: `normal_items` 中各分项比例之和必须严格等于平时成绩总比例。
+    *   **Strict Validation**: `normal_items` 中必须有且仅有考勤项严格为 10%。
+    *   **Strict Validation**: 其余 `normal_items` 分项得分比例必须 >= 5%，且必须是 5 的倍数。
+    *   **Naming Constraint**: `normal_items` 中的命名，针对“命题测试”、“章节测试”等，若只有单项，则不可带序号（如：命题测试）；若有多项，则必须带中文序号后缀（如：命题测试一、命题测试二）。“期末考核”名称必须精确唯一，不允许使用后缀。
+*   期末试卷结构/题目在 `exams.final_exam` 中定义（实际位于 `course_assessment.yaml`）。
+*   **实操类 A/B 卷数据要求**：
+    *   **Strict Generation**: Agent 在为考查课生成 `practice_ab` 类型的 `exams.final_exam` 数据时，**必须强制调用 `ab-practice-generator` 技能（注意：该技能已迁移至对应的课程工作区内）**。
+    *   严禁简单替换词汇敷衍生成，A/B 卷的 `practice_theme` 必须是场景隔离且工作量平行的具体应用。
+    *   必须一字不落地保留硬性教务条款（防抄袭、特定命名规范、超星学习通提交及缺/缓/重考说明）至 YAML 中。
 
-### 5.2 模板清单 (6 模板)
+### 5.2 模板清单 (3 模板体系)
 | 模板 | 格式 | 用途 | 填充逻辑 |
 |------|------|------|----------|
-| `Template_Exam_Checklist_A.docx` | `.docx` | 命题自查表 A卷 | 课程名称填入表格 row[1] |
-| `Template_Exam_Checklist_B.docx` | `.docx` | 命题自查表 B卷 | 同上 |
-| `Template_Exam_Paper_A.docx` | `.doc→.docx` | 期末试卷 A卷 | 表头填充（年级/专业/课程名/学期/大题数） |
-| `Template_Exam_Paper_B.docx` | `.doc→.docx` | 期末试卷 B卷 | 同上 |
-| `Template_Exam_Criteria_A.docx` | `.doc→.docx` | 评分标准 A卷 | 同 Paper 表头填充 |
-| `Template_Exam_Criteria_B.docx` | `.doc→.docx` | 评分标准 B卷 | 同上 |
+| `Template_Exam_Criteria_AB.docx` | `.docx` | 期末考查评分标准 | 渲染A/B卷的主题、题目要求及详细的评分矩阵。支持遍历 `example_images` 数组进行多图嵌入。 |
+| `Template_Exam_Paper_AB.docx` | `.docx` | 期末考查试卷 A/B 卷 | 单独渲染向学生下发的“考查型试卷”，仅包含具体的试题内容、基本要求、提交形式等教务信息。 |
+| `Template_Exam_Checklist_AB.docx` | `.docx` | 考查材料自查表 | 自动填入课程基本信息等教务项。并严格包含对试卷内容与评分标准的自查环节。 |
 
-> ⚠️ Paper/Criteria 的 `.doc` 原件已用 `textutil -convert docx` 预转换。原 `.doc` 文件保留备查。
+### 5.5 自查表 (Checklist) 编写规范
+自查表的内容必须与试卷内容和评分标准保持强一致性，并强制配套自查说明：
+1. **强一致性映射**：
+   * **题目要求映射**：A/B 卷的命题（创作目的、命题要求、递交格式、递交途径与时间）必须 100% 复制引用至自查表对应的 A/B 卷项中。
+   * **评分标准映射**：评分标准中的每个要点（连同分值）必须被遍历并精确引用。
+2. **“自查：”条目要求**：
+   * 在每一项被引用的内容下方，必须带有一个 `自查：` 打头的文本段落。
+   * **命题相关的自查句式范例**：`自查：设置的考核要求符合课程培育及能力目标，符合教学大纲授课内容及育人目标。` 或 `自查：考核标准清晰合理，题目要求明确。`
+   * **评分标准的自查句式范例**：`自查：符合政治立场与教学大纲要求，采分点设置合理。`
+3. **技术要求**：
+   * 模板文件必须使用 `docxtpl` 对应的变量（如 `{{ a_theme }}`, `{{ a_reqs }}`），与评分标准和试卷共享相同的数据源。
+   * 评分标准的遍历应使用 `{% tr for sec in sections %}` (表格内) 或 `{% p for sec in sections %}` (段落内) 确保不漏项。
 
 ### 5.3 生成器
-*   **脚本路径**：`scripts/gen_assessment_xml.py`
-*   **统一入口**：`gen_assessment(base_dir, output_dir, context)`
-*   **输出目录**：`output/考核材料/`
+*   **脚本路径**：`05_Assessment_Generator/generate_criteria.py` (替代原 `gen_assessment_xml.py`)
+*   **输出目录**：`05_Assessment_Generator/` (生成后按归档序号组织)
 
 ### 5.4 执行经验
-*   Paper/Criteria 模板是纯段落结构（66 个 `<w:p>`，0 个表格），表头信息通过段落索引定位
-*   Checklist 模板含 2 个表格（24 行基本信息 + 39 行题目分析），结构较复杂
-*   `.doc` 格式不能被 XML 引擎直接处理，必须先转换为 `.docx`
+*   **多图并行渲染**：A/B 卷经常需要提供多张参考图，旧版单变量逻辑无法满足。现已支持解析 `course_assessment.yaml` 中的 `example_images` 数组，通过 Jinja `{% for img in a_imgs %}` 在模板内横向/纵向平铺。
+*   **DocxTpl 换行陷阱**：在表格外循环输出包含换行的详细评分标准时，如果代码中使用 `replace('\n', '')` 暴力去换行，会导致内容糊成一团。`docxtpl` 原生支持将 `\n` 转换为 `<w:br/>`。
+*   **循环标签控制**：控制表格行克隆必须使用 `{%tr %}` 标签；控制段落循环必须使用 `{%p %}` 标签，否则会导致格式无限横向拉伸或遗漏格式外壳。
+*   **名称后缀污染**：过去经常出现“命题测试”和“命题测试一”混用或错误编号，目前在 Schema 的 `AssessmentMethods` 层对 `normal_items` 的全局单复数状态进行探测，并强制规范了没有后缀或带中文序号后缀的策略。
+*   **比例错乱**：在人工介入或 AI 生成数据时，曾出现考勤 20% 以及非 5 倍数（如 12%）等难以换算系统分数的问题，现已被 Schema 的严格 `root_validator` 直接在数据流入前封杀。

@@ -1,0 +1,1427 @@
+{
+  "total_files": 200,
+  "categories": {
+    "templates": [
+      ".github/ISSUE_TEMPLATE/bug_report.md",
+      ".github/ISSUE_TEMPLATE/documentation.md",
+      ".github/ISSUE_TEMPLATE/feature_request.md",
+      ".github/ISSUE_TEMPLATE/mcp_tool.md"
+    ],
+    "other": [
+      ".github/PULL_REQUEST_TEMPLATE.md",
+      "distribution/claude-plugin/README.md",
+      "distribution/claude-plugin/commands/create-skill.md",
+      "distribution/claude-plugin/commands/install-skill.md",
+      "distribution/claude-plugin/commands/sync-config.md",
+      "distribution/claude-plugin/skills/skill-builder/SKILL.md",
+      "distribution/github-action/README.md",
+      "distribution/smithery/README.md",
+      "docs/ARCHITECTURE.md",
+      "docs/BEST_PRACTICES.md",
+      "docs/DOCKER_DEPLOYMENT.md",
+      "docs/DOCUMENTATION_UPDATES_SUMMARY.md",
+      "docs/FAQ.md",
+      "docs/KUBERNETES_DEPLOYMENT.md",
+      "docs/PRODUCTION_DEPLOYMENT.md",
+      "docs/README.md",
+      "docs/TROUBLESHOOTING.md",
+      "docs/UML_ARCHITECTURE.md",
+      "docs/VIDEO_GUIDE.md",
+      "docs/advanced/custom-workflows.md",
+      "docs/advanced/mcp-server.md",
+      "docs/advanced/multi-source.md",
+      "docs/agents/plans/2026-03-14-epub-input-support.md",
+      "docs/blog/UNIVERSAL_RAG_PREPROCESSOR.md",
+      "docs/case-studies/deepwiki-open.md",
+      "docs/getting-started/01-installation.md",
+      "docs/getting-started/02-quick-start.md",
+      "docs/getting-started/03-your-first-skill.md",
+      "docs/getting-started/04-next-steps.md",
+      "docs/getting-started/05-scan-a-project.md",
+      "docs/integrations/CHROMA.md",
+      "docs/integrations/CLINE.md",
+      "docs/integrations/CONTINUE_DEV.md",
+      "docs/integrations/CURSOR.md",
+      "docs/integrations/FAISS.md",
+      "docs/integrations/GEMINI_INTEGRATION.md",
+      "docs/integrations/HAYSTACK.md",
+      "docs/integrations/INTEGRATIONS.md",
+      "docs/integrations/LANGCHAIN.md",
+      "docs/integrations/LLAMA_INDEX.md",
+      "docs/integrations/MINIMAX_INTEGRATION.md",
+      "docs/integrations/MULTI_LLM_SUPPORT.md",
+      "docs/integrations/OPENAI_INTEGRATION.md",
+      "docs/integrations/PINECONE.md",
+      "docs/integrations/QDRANT.md",
+      "docs/integrations/RAG_PIPELINES.md",
+      "docs/integrations/WEAVIATE.md",
+      "docs/integrations/WINDSURF.md",
+      "docs/plans/video/00_VIDEO_SOURCE_OVERVIEW.md",
+      "docs/plans/video/01_VIDEO_RESEARCH.md",
+      "docs/plans/video/02_VIDEO_DATA_MODELS.md",
+      "docs/plans/video/03_VIDEO_PIPELINE.md",
+      "docs/plans/video/04_VIDEO_INTEGRATION.md",
+      "docs/plans/video/05_VIDEO_OUTPUT.md",
+      "docs/plans/video/06_VIDEO_TESTING.md",
+      "docs/plans/video/07_VIDEO_DEPENDENCIES.md",
+      "docs/roadmap/INTELLIGENCE_SYSTEM_ARCHITECTURE.md",
+      "docs/roadmap/INTELLIGENCE_SYSTEM_RESEARCH.md",
+      "docs/roadmap/README.md",
+      "docs/roadmap/SKILL_INTELLIGENCE_SYSTEM.md",
+      "docs/strategy/ACTION_PLAN.md",
+      "docs/strategy/ARBITRARY_LIMITS_AND_DEAD_CODE_PLAN.md",
+      "docs/strategy/DEEPWIKI_ANALYSIS.md",
+      "docs/strategy/INTEGRATION_STRATEGY.md",
+      "docs/strategy/INTEGRATION_TEMPLATES.md",
+      "docs/strategy/KIMI_ANALYSIS_COMPARISON.md",
+      "docs/strategy/README.md",
+      "docs/strategy/STAGE_1_CORRECTED_IMPLEMENTATION.md",
+      "docs/strategy/STAGE_1_IMPLEMENTATION_SUMMARY.md",
+      "docs/strategy/STAGE_1_REVIEW_AND_VERIFICATION.md",
+      "docs/zh-CN/ARCHITECTURE.md",
+      "docs/zh-CN/README.md",
+      "docs/zh-CN/advanced/custom-workflows.md",
+      "docs/zh-CN/advanced/mcp-server.md",
+      "docs/zh-CN/advanced/multi-source.md",
+      "docs/zh-CN/getting-started/01-installation.md",
+      "docs/zh-CN/getting-started/02-quick-start.md",
+      "docs/zh-CN/getting-started/03-your-first-skill.md",
+      "docs/zh-CN/getting-started/04-next-steps.md",
+      "scripts/skill_header.md",
+      "skills/skill-seekers/SKILL.md",
+      "src/skill_seekers/mcp/README.md",
+      "tests/mcp_integration_test.md"
+    ],
+    "overview": [
+      "AGENTS.md",
+      "BULLETPROOF_QUICKSTART.md",
+      "CLAUDE.md",
+      "DOCUMENTATION_AUDIT_REPORT_2026-05-30.md",
+      "QWEN.md",
+      "README.ar.md",
+      "README.de.md",
+      "README.es.md",
+      "README.fr.md",
+      "README.hi.md",
+      "README.ja.md",
+      "README.ko.md",
+      "README.md",
+      "README.pt-BR.md",
+      "README.ru.md",
+      "README.tr.md",
+      "README.zh-CN.md",
+      "ROADMAP.md",
+      "TROUBLESHOOTING.md"
+    ],
+    "changelog": [
+      "CHANGELOG.md"
+    ],
+    "contributing": [
+      "CONTRIBUTING.md"
+    ],
+    "api": [
+      "api/README.md",
+      "docs/reference/AI_SKILL_STANDARDS.md",
+      "docs/reference/API_REFERENCE.md",
+      "docs/reference/C3_x_Router_Architecture.md",
+      "docs/reference/CLAUDE_INTEGRATION.md",
+      "docs/reference/CLI_REFERENCE.md",
+      "docs/reference/CODE_QUALITY.md",
+      "docs/reference/CONFIG_FORMAT.md",
+      "docs/reference/ENVIRONMENT_VARIABLES.md",
+      "docs/reference/FEATURE_MATRIX.md",
+      "docs/reference/GIT_CONFIG_SOURCES.md",
+      "docs/reference/LARGE_DOCUMENTATION.md",
+      "docs/reference/LLMS_TXT_SUPPORT.md",
+      "docs/reference/MCP_REFERENCE.md",
+      "docs/reference/SKILL_ARCHITECTURE.md",
+      "docs/zh-CN/reference/AI_SKILL_STANDARDS.md",
+      "docs/zh-CN/reference/API_REFERENCE.md",
+      "docs/zh-CN/reference/C3_x_Router_Architecture.md",
+      "docs/zh-CN/reference/CLAUDE_INTEGRATION.md",
+      "docs/zh-CN/reference/CLI_REFERENCE.md",
+      "docs/zh-CN/reference/CODE_QUALITY.md",
+      "docs/zh-CN/reference/CONFIG_FORMAT.md",
+      "docs/zh-CN/reference/ENVIRONMENT_VARIABLES.md",
+      "docs/zh-CN/reference/FEATURE_MATRIX.md",
+      "docs/zh-CN/reference/GIT_CONFIG_SOURCES.md",
+      "docs/zh-CN/reference/LARGE_DOCUMENTATION.md",
+      "docs/zh-CN/reference/LLMS_TXT_SUPPORT.md",
+      "docs/zh-CN/reference/MCP_REFERENCE.md",
+      "docs/zh-CN/reference/SKILL_ARCHITECTURE.md"
+    ],
+    "architecture": [
+      "docs/agents/research/2026-03-14-epub-input-support-affected-files.md",
+      "docs/archive/historical/ARCHITECTURE_VERIFICATION_REPORT.md",
+      "docs/archive/historical/HTTPX_SKILL_GRADING.md",
+      "docs/archive/historical/IMPLEMENTATION_SUMMARY_THREE_STREAM.md",
+      "docs/archive/historical/LOCAL_REPO_TEST_RESULTS.md",
+      "docs/archive/historical/SKILL_QUALITY_FIX_PLAN.md",
+      "docs/archive/historical/TEST_MCP_IN_CLAUDE_CODE.md",
+      "docs/archive/historical/THREE_STREAM_COMPLETION_SUMMARY.md",
+      "docs/archive/historical/THREE_STREAM_STATUS_REPORT.md",
+      "docs/archive/legacy/QUICKSTART.md",
+      "docs/archive/legacy/QUICK_REFERENCE.md",
+      "docs/archive/legacy/README.md",
+      "docs/archive/legacy/USAGE.md",
+      "docs/archive/plans/2025-10-24-active-skills-design.md",
+      "docs/archive/plans/2025-10-24-active-skills-phase1.md",
+      "docs/archive/research/PDF_EXTRACTOR_POC.md",
+      "docs/archive/research/PDF_IMAGE_EXTRACTION.md",
+      "docs/archive/research/PDF_PARSING_RESEARCH.md",
+      "docs/archive/research/PDF_SYNTAX_DETECTION.md"
+    ],
+    "features": [
+      "docs/features/BOOTSTRAP_SKILL.md",
+      "docs/features/BOOTSTRAP_SKILL_TECHNICAL.md",
+      "docs/features/ENHANCEMENT.md",
+      "docs/features/ENHANCEMENT_MODES.md",
+      "docs/features/HOW_TO_GUIDES.md",
+      "docs/features/PATTERN_DETECTION.md",
+      "docs/features/PDF_ADVANCED_FEATURES.md",
+      "docs/features/PDF_CHUNKING.md",
+      "docs/features/PDF_MCP_TOOL.md",
+      "docs/features/PDF_SCRAPER.md",
+      "docs/features/TEST_EXAMPLE_EXTRACTION.md",
+      "docs/features/UNIFIED_SCRAPING.md"
+    ],
+    "guides": [
+      "docs/guides/HTTP_TRANSPORT.md",
+      "docs/guides/MCP_SETUP.md",
+      "docs/guides/MIGRATION_GUIDE.md",
+      "docs/guides/MULTI_AGENT_SETUP.md",
+      "docs/guides/SETUP_QUICK_REFERENCE.md",
+      "docs/guides/TESTING_GUIDE.md",
+      "docs/guides/UPLOAD_GUIDE.md",
+      "docs/user-guide/01-core-concepts.md",
+      "docs/user-guide/02-scraping.md",
+      "docs/user-guide/03-enhancement.md",
+      "docs/user-guide/04-packaging.md",
+      "docs/user-guide/05-workflows.md",
+      "docs/user-guide/06-troubleshooting.md",
+      "docs/zh-CN/user-guide/01-core-concepts.md",
+      "docs/zh-CN/user-guide/02-scraping.md",
+      "docs/zh-CN/user-guide/03-enhancement.md",
+      "docs/zh-CN/user-guide/04-packaging.md",
+      "docs/zh-CN/user-guide/05-workflows.md",
+      "docs/zh-CN/user-guide/06-troubleshooting.md"
+    ],
+    "examples": [
+      "examples/chroma-example/README.md",
+      "examples/cline-django-assistant/README.md",
+      "examples/continue-dev-universal/README.md",
+      "examples/cursor-react-skill/README.md",
+      "examples/cursor-react-skill/example-project/README.md",
+      "examples/faiss-example/README.md",
+      "examples/haystack-pipeline/README.md",
+      "examples/langchain-rag-pipeline/README.md",
+      "examples/llama-index-query-engine/README.md",
+      "examples/pinecone-upsert/README.md",
+      "examples/qdrant-example/README.md",
+      "examples/weaviate-example/README.md",
+      "examples/windsurf-fastapi-context/README.md"
+    ]
+  },
+  "files": [
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "filename": "bug_report.md",
+      "category": "templates",
+      "size_bytes": 968
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/documentation.md",
+      "filename": "documentation.md",
+      "category": "templates",
+      "size_bytes": 823
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "filename": "feature_request.md",
+      "category": "templates",
+      "size_bytes": 848
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/mcp_tool.md",
+      "filename": "mcp_tool.md",
+      "category": "templates",
+      "size_bytes": 853
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "filename": "PULL_REQUEST_TEMPLATE.md",
+      "category": "other",
+      "size_bytes": 1418
+    },
+    {
+      "path": "AGENTS.md",
+      "filename": "AGENTS.md",
+      "category": "overview",
+      "size_bytes": 13747
+    },
+    {
+      "path": "BULLETPROOF_QUICKSTART.md",
+      "filename": "BULLETPROOF_QUICKSTART.md",
+      "category": "overview",
+      "size_bytes": 14160
+    },
+    {
+      "path": "CHANGELOG.md",
+      "filename": "CHANGELOG.md",
+      "category": "changelog",
+      "size_bytes": 180777
+    },
+    {
+      "path": "CLAUDE.md",
+      "filename": "CLAUDE.md",
+      "category": "overview",
+      "size_bytes": 15890
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "filename": "CONTRIBUTING.md",
+      "category": "contributing",
+      "size_bytes": 16174
+    },
+    {
+      "path": "DOCUMENTATION_AUDIT_REPORT_2026-05-30.md",
+      "filename": "DOCUMENTATION_AUDIT_REPORT_2026-05-30.md",
+      "category": "overview",
+      "size_bytes": 28550
+    },
+    {
+      "path": "QWEN.md",
+      "filename": "QWEN.md",
+      "category": "overview",
+      "size_bytes": 19981
+    },
+    {
+      "path": "README.ar.md",
+      "filename": "README.ar.md",
+      "category": "overview",
+      "size_bytes": 60002
+    },
+    {
+      "path": "README.de.md",
+      "filename": "README.de.md",
+      "category": "overview",
+      "size_bytes": 49423
+    },
+    {
+      "path": "README.es.md",
+      "filename": "README.es.md",
+      "category": "overview",
+      "size_bytes": 55437
+    },
+    {
+      "path": "README.fr.md",
+      "filename": "README.fr.md",
+      "category": "overview",
+      "size_bytes": 57316
+    },
+    {
+      "path": "README.hi.md",
+      "filename": "README.hi.md",
+      "category": "overview",
+      "size_bytes": 87054
+    },
+    {
+      "path": "README.ja.md",
+      "filename": "README.ja.md",
+      "category": "overview",
+      "size_bytes": 56336
+    },
+    {
+      "path": "README.ko.md",
+      "filename": "README.ko.md",
+      "category": "overview",
+      "size_bytes": 49102
+    },
+    {
+      "path": "README.md",
+      "filename": "README.md",
+      "category": "overview",
+      "size_bytes": 56584
+    },
+    {
+      "path": "README.pt-BR.md",
+      "filename": "README.pt-BR.md",
+      "category": "overview",
+      "size_bytes": 54439
+    },
+    {
+      "path": "README.ru.md",
+      "filename": "README.ru.md",
+      "category": "overview",
+      "size_bytes": 69392
+    },
+    {
+      "path": "README.tr.md",
+      "filename": "README.tr.md",
+      "category": "overview",
+      "size_bytes": 55805
+    },
+    {
+      "path": "README.zh-CN.md",
+      "filename": "README.zh-CN.md",
+      "category": "overview",
+      "size_bytes": 44949
+    },
+    {
+      "path": "ROADMAP.md",
+      "filename": "ROADMAP.md",
+      "category": "overview",
+      "size_bytes": 15280
+    },
+    {
+      "path": "TROUBLESHOOTING.md",
+      "filename": "TROUBLESHOOTING.md",
+      "category": "overview",
+      "size_bytes": 8962
+    },
+    {
+      "path": "api/README.md",
+      "filename": "README.md",
+      "category": "api",
+      "size_bytes": 6160
+    },
+    {
+      "path": "distribution/claude-plugin/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 2678
+    },
+    {
+      "path": "distribution/claude-plugin/commands/create-skill.md",
+      "filename": "create-skill.md",
+      "category": "other",
+      "size_bytes": 1948
+    },
+    {
+      "path": "distribution/claude-plugin/commands/install-skill.md",
+      "filename": "install-skill.md",
+      "category": "other",
+      "size_bytes": 1576
+    },
+    {
+      "path": "distribution/claude-plugin/commands/sync-config.md",
+      "filename": "sync-config.md",
+      "category": "other",
+      "size_bytes": 834
+    },
+    {
+      "path": "distribution/claude-plugin/skills/skill-builder/SKILL.md",
+      "filename": "SKILL.md",
+      "category": "other",
+      "size_bytes": 3073
+    },
+    {
+      "path": "distribution/github-action/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 3775
+    },
+    {
+      "path": "distribution/smithery/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 3796
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "filename": "ARCHITECTURE.md",
+      "category": "other",
+      "size_bytes": 5856
+    },
+    {
+      "path": "docs/BEST_PRACTICES.md",
+      "filename": "BEST_PRACTICES.md",
+      "category": "other",
+      "size_bytes": 12331
+    },
+    {
+      "path": "docs/DOCKER_DEPLOYMENT.md",
+      "filename": "DOCKER_DEPLOYMENT.md",
+      "category": "other",
+      "size_bytes": 14213
+    },
+    {
+      "path": "docs/DOCUMENTATION_UPDATES_SUMMARY.md",
+      "filename": "DOCUMENTATION_UPDATES_SUMMARY.md",
+      "category": "other",
+      "size_bytes": 5470
+    },
+    {
+      "path": "docs/FAQ.md",
+      "filename": "FAQ.md",
+      "category": "other",
+      "size_bytes": 24454
+    },
+    {
+      "path": "docs/KUBERNETES_DEPLOYMENT.md",
+      "filename": "KUBERNETES_DEPLOYMENT.md",
+      "category": "other",
+      "size_bytes": 17893
+    },
+    {
+      "path": "docs/PRODUCTION_DEPLOYMENT.md",
+      "filename": "PRODUCTION_DEPLOYMENT.md",
+      "category": "other",
+      "size_bytes": 16349
+    },
+    {
+      "path": "docs/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 6370
+    },
+    {
+      "path": "docs/TROUBLESHOOTING.md",
+      "filename": "TROUBLESHOOTING.md",
+      "category": "other",
+      "size_bytes": 22244
+    },
+    {
+      "path": "docs/UML_ARCHITECTURE.md",
+      "filename": "UML_ARCHITECTURE.md",
+      "category": "other",
+      "size_bytes": 15452
+    },
+    {
+      "path": "docs/VIDEO_GUIDE.md",
+      "filename": "VIDEO_GUIDE.md",
+      "category": "other",
+      "size_bytes": 19914
+    },
+    {
+      "path": "docs/advanced/custom-workflows.md",
+      "filename": "custom-workflows.md",
+      "category": "other",
+      "size_bytes": 7256
+    },
+    {
+      "path": "docs/advanced/mcp-server.md",
+      "filename": "mcp-server.md",
+      "category": "other",
+      "size_bytes": 7255
+    },
+    {
+      "path": "docs/advanced/multi-source.md",
+      "filename": "multi-source.md",
+      "category": "other",
+      "size_bytes": 13126
+    },
+    {
+      "path": "docs/agents/plans/2026-03-14-epub-input-support.md",
+      "filename": "2026-03-14-epub-input-support.md",
+      "category": "other",
+      "size_bytes": 43484
+    },
+    {
+      "path": "docs/agents/research/2026-03-14-epub-input-support-affected-files.md",
+      "filename": "2026-03-14-epub-input-support-affected-files.md",
+      "category": "architecture",
+      "size_bytes": 10318
+    },
+    {
+      "path": "docs/archive/historical/ARCHITECTURE_VERIFICATION_REPORT.md",
+      "filename": "ARCHITECTURE_VERIFICATION_REPORT.md",
+      "category": "architecture",
+      "size_bytes": 25768
+    },
+    {
+      "path": "docs/archive/historical/HTTPX_SKILL_GRADING.md",
+      "filename": "HTTPX_SKILL_GRADING.md",
+      "category": "architecture",
+      "size_bytes": 31502
+    },
+    {
+      "path": "docs/archive/historical/IMPLEMENTATION_SUMMARY_THREE_STREAM.md",
+      "filename": "IMPLEMENTATION_SUMMARY_THREE_STREAM.md",
+      "category": "architecture",
+      "size_bytes": 15108
+    },
+    {
+      "path": "docs/archive/historical/LOCAL_REPO_TEST_RESULTS.md",
+      "filename": "LOCAL_REPO_TEST_RESULTS.md",
+      "category": "architecture",
+      "size_bytes": 13609
+    },
+    {
+      "path": "docs/archive/historical/SKILL_QUALITY_FIX_PLAN.md",
+      "filename": "SKILL_QUALITY_FIX_PLAN.md",
+      "category": "architecture",
+      "size_bytes": 10041
+    },
+    {
+      "path": "docs/archive/historical/TEST_MCP_IN_CLAUDE_CODE.md",
+      "filename": "TEST_MCP_IN_CLAUDE_CODE.md",
+      "category": "architecture",
+      "size_bytes": 7584
+    },
+    {
+      "path": "docs/archive/historical/THREE_STREAM_COMPLETION_SUMMARY.md",
+      "filename": "THREE_STREAM_COMPLETION_SUMMARY.md",
+      "category": "architecture",
+      "size_bytes": 12941
+    },
+    {
+      "path": "docs/archive/historical/THREE_STREAM_STATUS_REPORT.md",
+      "filename": "THREE_STREAM_STATUS_REPORT.md",
+      "category": "architecture",
+      "size_bytes": 11895
+    },
+    {
+      "path": "docs/archive/legacy/QUICKSTART.md",
+      "filename": "QUICKSTART.md",
+      "category": "architecture",
+      "size_bytes": 4169
+    },
+    {
+      "path": "docs/archive/legacy/QUICK_REFERENCE.md",
+      "filename": "QUICK_REFERENCE.md",
+      "category": "architecture",
+      "size_bytes": 11324
+    },
+    {
+      "path": "docs/archive/legacy/README.md",
+      "filename": "README.md",
+      "category": "architecture",
+      "size_bytes": 1925
+    },
+    {
+      "path": "docs/archive/legacy/USAGE.md",
+      "filename": "USAGE.md",
+      "category": "architecture",
+      "size_bytes": 18751
+    },
+    {
+      "path": "docs/archive/plans/2025-10-24-active-skills-design.md",
+      "filename": "2025-10-24-active-skills-design.md",
+      "category": "architecture",
+      "size_bytes": 23914
+    },
+    {
+      "path": "docs/archive/plans/2025-10-24-active-skills-phase1.md",
+      "filename": "2025-10-24-active-skills-phase1.md",
+      "category": "architecture",
+      "size_bytes": 19776
+    },
+    {
+      "path": "docs/archive/research/PDF_EXTRACTOR_POC.md",
+      "filename": "PDF_EXTRACTOR_POC.md",
+      "category": "architecture",
+      "size_bytes": 10691
+    },
+    {
+      "path": "docs/archive/research/PDF_IMAGE_EXTRACTION.md",
+      "filename": "PDF_IMAGE_EXTRACTION.md",
+      "category": "architecture",
+      "size_bytes": 12792
+    },
+    {
+      "path": "docs/archive/research/PDF_PARSING_RESEARCH.md",
+      "filename": "PDF_PARSING_RESEARCH.md",
+      "category": "architecture",
+      "size_bytes": 12092
+    },
+    {
+      "path": "docs/archive/research/PDF_SYNTAX_DETECTION.md",
+      "filename": "PDF_SYNTAX_DETECTION.md",
+      "category": "architecture",
+      "size_bytes": 14438
+    },
+    {
+      "path": "docs/blog/UNIVERSAL_RAG_PREPROCESSOR.md",
+      "filename": "UNIVERSAL_RAG_PREPROCESSOR.md",
+      "category": "other",
+      "size_bytes": 18723
+    },
+    {
+      "path": "docs/case-studies/deepwiki-open.md",
+      "filename": "deepwiki-open.md",
+      "category": "other",
+      "size_bytes": 11512
+    },
+    {
+      "path": "docs/features/BOOTSTRAP_SKILL.md",
+      "filename": "BOOTSTRAP_SKILL.md",
+      "category": "features",
+      "size_bytes": 17726
+    },
+    {
+      "path": "docs/features/BOOTSTRAP_SKILL_TECHNICAL.md",
+      "filename": "BOOTSTRAP_SKILL_TECHNICAL.md",
+      "category": "features",
+      "size_bytes": 17501
+    },
+    {
+      "path": "docs/features/ENHANCEMENT.md",
+      "filename": "ENHANCEMENT.md",
+      "category": "features",
+      "size_bytes": 8987
+    },
+    {
+      "path": "docs/features/ENHANCEMENT_MODES.md",
+      "filename": "ENHANCEMENT_MODES.md",
+      "category": "features",
+      "size_bytes": 14045
+    },
+    {
+      "path": "docs/features/HOW_TO_GUIDES.md",
+      "filename": "HOW_TO_GUIDES.md",
+      "category": "features",
+      "size_bytes": 33411
+    },
+    {
+      "path": "docs/features/PATTERN_DETECTION.md",
+      "filename": "PATTERN_DETECTION.md",
+      "category": "features",
+      "size_bytes": 13204
+    },
+    {
+      "path": "docs/features/PDF_ADVANCED_FEATURES.md",
+      "filename": "PDF_ADVANCED_FEATURES.md",
+      "category": "features",
+      "size_bytes": 13440
+    },
+    {
+      "path": "docs/features/PDF_CHUNKING.md",
+      "filename": "PDF_CHUNKING.md",
+      "category": "features",
+      "size_bytes": 13136
+    },
+    {
+      "path": "docs/features/PDF_MCP_TOOL.md",
+      "filename": "PDF_MCP_TOOL.md",
+      "category": "features",
+      "size_bytes": 10345
+    },
+    {
+      "path": "docs/features/PDF_SCRAPER.md",
+      "filename": "PDF_SCRAPER.md",
+      "category": "features",
+      "size_bytes": 13645
+    },
+    {
+      "path": "docs/features/TEST_EXAMPLE_EXTRACTION.md",
+      "filename": "TEST_EXAMPLE_EXTRACTION.md",
+      "category": "features",
+      "size_bytes": 11571
+    },
+    {
+      "path": "docs/features/UNIFIED_SCRAPING.md",
+      "filename": "UNIFIED_SCRAPING.md",
+      "category": "features",
+      "size_bytes": 24024
+    },
+    {
+      "path": "docs/getting-started/01-installation.md",
+      "filename": "01-installation.md",
+      "category": "other",
+      "size_bytes": 7265
+    },
+    {
+      "path": "docs/getting-started/02-quick-start.md",
+      "filename": "02-quick-start.md",
+      "category": "other",
+      "size_bytes": 8517
+    },
+    {
+      "path": "docs/getting-started/03-your-first-skill.md",
+      "filename": "03-your-first-skill.md",
+      "category": "other",
+      "size_bytes": 8201
+    },
+    {
+      "path": "docs/getting-started/04-next-steps.md",
+      "filename": "04-next-steps.md",
+      "category": "other",
+      "size_bytes": 7753
+    },
+    {
+      "path": "docs/getting-started/05-scan-a-project.md",
+      "filename": "05-scan-a-project.md",
+      "category": "other",
+      "size_bytes": 8192
+    },
+    {
+      "path": "docs/guides/HTTP_TRANSPORT.md",
+      "filename": "HTTP_TRANSPORT.md",
+      "category": "guides",
+      "size_bytes": 7028
+    },
+    {
+      "path": "docs/guides/MCP_SETUP.md",
+      "filename": "MCP_SETUP.md",
+      "category": "guides",
+      "size_bytes": 33232
+    },
+    {
+      "path": "docs/guides/MIGRATION_GUIDE.md",
+      "filename": "MIGRATION_GUIDE.md",
+      "category": "guides",
+      "size_bytes": 12914
+    },
+    {
+      "path": "docs/guides/MULTI_AGENT_SETUP.md",
+      "filename": "MULTI_AGENT_SETUP.md",
+      "category": "guides",
+      "size_bytes": 14596
+    },
+    {
+      "path": "docs/guides/SETUP_QUICK_REFERENCE.md",
+      "filename": "SETUP_QUICK_REFERENCE.md",
+      "category": "guides",
+      "size_bytes": 7192
+    },
+    {
+      "path": "docs/guides/TESTING_GUIDE.md",
+      "filename": "TESTING_GUIDE.md",
+      "category": "guides",
+      "size_bytes": 21827
+    },
+    {
+      "path": "docs/guides/UPLOAD_GUIDE.md",
+      "filename": "UPLOAD_GUIDE.md",
+      "category": "guides",
+      "size_bytes": 10973
+    },
+    {
+      "path": "docs/integrations/CHROMA.md",
+      "filename": "CHROMA.md",
+      "category": "other",
+      "size_bytes": 25315
+    },
+    {
+      "path": "docs/integrations/CLINE.md",
+      "filename": "CLINE.md",
+      "category": "other",
+      "size_bytes": 24183
+    },
+    {
+      "path": "docs/integrations/CONTINUE_DEV.md",
+      "filename": "CONTINUE_DEV.md",
+      "category": "other",
+      "size_bytes": 24716
+    },
+    {
+      "path": "docs/integrations/CURSOR.md",
+      "filename": "CURSOR.md",
+      "category": "other",
+      "size_bytes": 16926
+    },
+    {
+      "path": "docs/integrations/FAISS.md",
+      "filename": "FAISS.md",
+      "category": "other",
+      "size_bytes": 14955
+    },
+    {
+      "path": "docs/integrations/GEMINI_INTEGRATION.md",
+      "filename": "GEMINI_INTEGRATION.md",
+      "category": "other",
+      "size_bytes": 9664
+    },
+    {
+      "path": "docs/integrations/HAYSTACK.md",
+      "filename": "HAYSTACK.md",
+      "category": "other",
+      "size_bytes": 21206
+    },
+    {
+      "path": "docs/integrations/INTEGRATIONS.md",
+      "filename": "INTEGRATIONS.md",
+      "category": "other",
+      "size_bytes": 18597
+    },
+    {
+      "path": "docs/integrations/LANGCHAIN.md",
+      "filename": "LANGCHAIN.md",
+      "category": "other",
+      "size_bytes": 12986
+    },
+    {
+      "path": "docs/integrations/LLAMA_INDEX.md",
+      "filename": "LLAMA_INDEX.md",
+      "category": "other",
+      "size_bytes": 12458
+    },
+    {
+      "path": "docs/integrations/MINIMAX_INTEGRATION.md",
+      "filename": "MINIMAX_INTEGRATION.md",
+      "category": "other",
+      "size_bytes": 9295
+    },
+    {
+      "path": "docs/integrations/MULTI_LLM_SUPPORT.md",
+      "filename": "MULTI_LLM_SUPPORT.md",
+      "category": "other",
+      "size_bytes": 11254
+    },
+    {
+      "path": "docs/integrations/OPENAI_INTEGRATION.md",
+      "filename": "OPENAI_INTEGRATION.md",
+      "category": "other",
+      "size_bytes": 11849
+    },
+    {
+      "path": "docs/integrations/PINECONE.md",
+      "filename": "PINECONE.md",
+      "category": "other",
+      "size_bytes": 21303
+    },
+    {
+      "path": "docs/integrations/QDRANT.md",
+      "filename": "QDRANT.md",
+      "category": "other",
+      "size_bytes": 23279
+    },
+    {
+      "path": "docs/integrations/RAG_PIPELINES.md",
+      "filename": "RAG_PIPELINES.md",
+      "category": "other",
+      "size_bytes": 29090
+    },
+    {
+      "path": "docs/integrations/WEAVIATE.md",
+      "filename": "WEAVIATE.md",
+      "category": "other",
+      "size_bytes": 26596
+    },
+    {
+      "path": "docs/integrations/WINDSURF.md",
+      "filename": "WINDSURF.md",
+      "category": "other",
+      "size_bytes": 22797
+    },
+    {
+      "path": "docs/plans/video/00_VIDEO_SOURCE_OVERVIEW.md",
+      "filename": "00_VIDEO_SOURCE_OVERVIEW.md",
+      "category": "other",
+      "size_bytes": 13234
+    },
+    {
+      "path": "docs/plans/video/01_VIDEO_RESEARCH.md",
+      "filename": "01_VIDEO_RESEARCH.md",
+      "category": "other",
+      "size_bytes": 23609
+    },
+    {
+      "path": "docs/plans/video/02_VIDEO_DATA_MODELS.md",
+      "filename": "02_VIDEO_DATA_MODELS.md",
+      "category": "other",
+      "size_bytes": 30402
+    },
+    {
+      "path": "docs/plans/video/03_VIDEO_PIPELINE.md",
+      "filename": "03_VIDEO_PIPELINE.md",
+      "category": "other",
+      "size_bytes": 37235
+    },
+    {
+      "path": "docs/plans/video/04_VIDEO_INTEGRATION.md",
+      "filename": "04_VIDEO_INTEGRATION.md",
+      "category": "other",
+      "size_bytes": 26296
+    },
+    {
+      "path": "docs/plans/video/05_VIDEO_OUTPUT.md",
+      "filename": "05_VIDEO_OUTPUT.md",
+      "category": "other",
+      "size_bytes": 17706
+    },
+    {
+      "path": "docs/plans/video/06_VIDEO_TESTING.md",
+      "filename": "06_VIDEO_TESTING.md",
+      "category": "other",
+      "size_bytes": 24189
+    },
+    {
+      "path": "docs/plans/video/07_VIDEO_DEPENDENCIES.md",
+      "filename": "07_VIDEO_DEPENDENCIES.md",
+      "category": "other",
+      "size_bytes": 13505
+    },
+    {
+      "path": "docs/reference/AI_SKILL_STANDARDS.md",
+      "filename": "AI_SKILL_STANDARDS.md",
+      "category": "api",
+      "size_bytes": 28176
+    },
+    {
+      "path": "docs/reference/API_REFERENCE.md",
+      "filename": "API_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 25644
+    },
+    {
+      "path": "docs/reference/C3_x_Router_Architecture.md",
+      "filename": "C3_x_Router_Architecture.md",
+      "category": "api",
+      "size_bytes": 71448
+    },
+    {
+      "path": "docs/reference/CLAUDE_INTEGRATION.md",
+      "filename": "CLAUDE_INTEGRATION.md",
+      "category": "api",
+      "size_bytes": 20412
+    },
+    {
+      "path": "docs/reference/CLI_REFERENCE.md",
+      "filename": "CLI_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 49003
+    },
+    {
+      "path": "docs/reference/CODE_QUALITY.md",
+      "filename": "CODE_QUALITY.md",
+      "category": "api",
+      "size_bytes": 16435
+    },
+    {
+      "path": "docs/reference/CONFIG_FORMAT.md",
+      "filename": "CONFIG_FORMAT.md",
+      "category": "api",
+      "size_bytes": 21677
+    },
+    {
+      "path": "docs/reference/ENVIRONMENT_VARIABLES.md",
+      "filename": "ENVIRONMENT_VARIABLES.md",
+      "category": "api",
+      "size_bytes": 16369
+    },
+    {
+      "path": "docs/reference/FEATURE_MATRIX.md",
+      "filename": "FEATURE_MATRIX.md",
+      "category": "api",
+      "size_bytes": 15158
+    },
+    {
+      "path": "docs/reference/GIT_CONFIG_SOURCES.md",
+      "filename": "GIT_CONFIG_SOURCES.md",
+      "category": "api",
+      "size_bytes": 20501
+    },
+    {
+      "path": "docs/reference/LARGE_DOCUMENTATION.md",
+      "filename": "LARGE_DOCUMENTATION.md",
+      "category": "api",
+      "size_bytes": 9464
+    },
+    {
+      "path": "docs/reference/LLMS_TXT_SUPPORT.md",
+      "filename": "LLMS_TXT_SUPPORT.md",
+      "category": "api",
+      "size_bytes": 1385
+    },
+    {
+      "path": "docs/reference/MCP_REFERENCE.md",
+      "filename": "MCP_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 24759
+    },
+    {
+      "path": "docs/reference/SKILL_ARCHITECTURE.md",
+      "filename": "SKILL_ARCHITECTURE.md",
+      "category": "api",
+      "size_bytes": 23732
+    },
+    {
+      "path": "docs/roadmap/INTELLIGENCE_SYSTEM_ARCHITECTURE.md",
+      "filename": "INTELLIGENCE_SYSTEM_ARCHITECTURE.md",
+      "category": "other",
+      "size_bytes": 40907
+    },
+    {
+      "path": "docs/roadmap/INTELLIGENCE_SYSTEM_RESEARCH.md",
+      "filename": "INTELLIGENCE_SYSTEM_RESEARCH.md",
+      "category": "other",
+      "size_bytes": 19617
+    },
+    {
+      "path": "docs/roadmap/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 9244
+    },
+    {
+      "path": "docs/roadmap/SKILL_INTELLIGENCE_SYSTEM.md",
+      "filename": "SKILL_INTELLIGENCE_SYSTEM.md",
+      "category": "other",
+      "size_bytes": 29178
+    },
+    {
+      "path": "docs/strategy/ACTION_PLAN.md",
+      "filename": "ACTION_PLAN.md",
+      "category": "other",
+      "size_bytes": 25055
+    },
+    {
+      "path": "docs/strategy/ARBITRARY_LIMITS_AND_DEAD_CODE_PLAN.md",
+      "filename": "ARBITRARY_LIMITS_AND_DEAD_CODE_PLAN.md",
+      "category": "other",
+      "size_bytes": 13273
+    },
+    {
+      "path": "docs/strategy/DEEPWIKI_ANALYSIS.md",
+      "filename": "DEEPWIKI_ANALYSIS.md",
+      "category": "other",
+      "size_bytes": 10646
+    },
+    {
+      "path": "docs/strategy/INTEGRATION_STRATEGY.md",
+      "filename": "INTEGRATION_STRATEGY.md",
+      "category": "other",
+      "size_bytes": 14456
+    },
+    {
+      "path": "docs/strategy/INTEGRATION_TEMPLATES.md",
+      "filename": "INTEGRATION_TEMPLATES.md",
+      "category": "other",
+      "size_bytes": 13948
+    },
+    {
+      "path": "docs/strategy/KIMI_ANALYSIS_COMPARISON.md",
+      "filename": "KIMI_ANALYSIS_COMPARISON.md",
+      "category": "other",
+      "size_bytes": 16317
+    },
+    {
+      "path": "docs/strategy/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 8859
+    },
+    {
+      "path": "docs/strategy/STAGE_1_CORRECTED_IMPLEMENTATION.md",
+      "filename": "STAGE_1_CORRECTED_IMPLEMENTATION.md",
+      "category": "other",
+      "size_bytes": 4705
+    },
+    {
+      "path": "docs/strategy/STAGE_1_IMPLEMENTATION_SUMMARY.md",
+      "filename": "STAGE_1_IMPLEMENTATION_SUMMARY.md",
+      "category": "other",
+      "size_bytes": 4966
+    },
+    {
+      "path": "docs/strategy/STAGE_1_REVIEW_AND_VERIFICATION.md",
+      "filename": "STAGE_1_REVIEW_AND_VERIFICATION.md",
+      "category": "other",
+      "size_bytes": 8215
+    },
+    {
+      "path": "docs/user-guide/01-core-concepts.md",
+      "filename": "01-core-concepts.md",
+      "category": "guides",
+      "size_bytes": 11714
+    },
+    {
+      "path": "docs/user-guide/02-scraping.md",
+      "filename": "02-scraping.md",
+      "category": "guides",
+      "size_bytes": 13769
+    },
+    {
+      "path": "docs/user-guide/03-enhancement.md",
+      "filename": "03-enhancement.md",
+      "category": "guides",
+      "size_bytes": 9434
+    },
+    {
+      "path": "docs/user-guide/04-packaging.md",
+      "filename": "04-packaging.md",
+      "category": "guides",
+      "size_bytes": 11025
+    },
+    {
+      "path": "docs/user-guide/05-workflows.md",
+      "filename": "05-workflows.md",
+      "category": "guides",
+      "size_bytes": 13945
+    },
+    {
+      "path": "docs/user-guide/06-troubleshooting.md",
+      "filename": "06-troubleshooting.md",
+      "category": "guides",
+      "size_bytes": 2587
+    },
+    {
+      "path": "docs/zh-CN/ARCHITECTURE.md",
+      "filename": "ARCHITECTURE.md",
+      "category": "other",
+      "size_bytes": 5372
+    },
+    {
+      "path": "docs/zh-CN/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 565
+    },
+    {
+      "path": "docs/zh-CN/advanced/custom-workflows.md",
+      "filename": "custom-workflows.md",
+      "category": "other",
+      "size_bytes": 7156
+    },
+    {
+      "path": "docs/zh-CN/advanced/mcp-server.md",
+      "filename": "mcp-server.md",
+      "category": "other",
+      "size_bytes": 7459
+    },
+    {
+      "path": "docs/zh-CN/advanced/multi-source.md",
+      "filename": "multi-source.md",
+      "category": "other",
+      "size_bytes": 8219
+    },
+    {
+      "path": "docs/zh-CN/getting-started/01-installation.md",
+      "filename": "01-installation.md",
+      "category": "other",
+      "size_bytes": 6525
+    },
+    {
+      "path": "docs/zh-CN/getting-started/02-quick-start.md",
+      "filename": "02-quick-start.md",
+      "category": "other",
+      "size_bytes": 7881
+    },
+    {
+      "path": "docs/zh-CN/getting-started/03-your-first-skill.md",
+      "filename": "03-your-first-skill.md",
+      "category": "other",
+      "size_bytes": 8207
+    },
+    {
+      "path": "docs/zh-CN/getting-started/04-next-steps.md",
+      "filename": "04-next-steps.md",
+      "category": "other",
+      "size_bytes": 7180
+    },
+    {
+      "path": "docs/zh-CN/reference/AI_SKILL_STANDARDS.md",
+      "filename": "AI_SKILL_STANDARDS.md",
+      "category": "api",
+      "size_bytes": 28176
+    },
+    {
+      "path": "docs/zh-CN/reference/API_REFERENCE.md",
+      "filename": "API_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 22689
+    },
+    {
+      "path": "docs/zh-CN/reference/C3_x_Router_Architecture.md",
+      "filename": "C3_x_Router_Architecture.md",
+      "category": "api",
+      "size_bytes": 71448
+    },
+    {
+      "path": "docs/zh-CN/reference/CLAUDE_INTEGRATION.md",
+      "filename": "CLAUDE_INTEGRATION.md",
+      "category": "api",
+      "size_bytes": 20301
+    },
+    {
+      "path": "docs/zh-CN/reference/CLI_REFERENCE.md",
+      "filename": "CLI_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 32165
+    },
+    {
+      "path": "docs/zh-CN/reference/CODE_QUALITY.md",
+      "filename": "CODE_QUALITY.md",
+      "category": "api",
+      "size_bytes": 16435
+    },
+    {
+      "path": "docs/zh-CN/reference/CONFIG_FORMAT.md",
+      "filename": "CONFIG_FORMAT.md",
+      "category": "api",
+      "size_bytes": 13876
+    },
+    {
+      "path": "docs/zh-CN/reference/ENVIRONMENT_VARIABLES.md",
+      "filename": "ENVIRONMENT_VARIABLES.md",
+      "category": "api",
+      "size_bytes": 12237
+    },
+    {
+      "path": "docs/zh-CN/reference/FEATURE_MATRIX.md",
+      "filename": "FEATURE_MATRIX.md",
+      "category": "api",
+      "size_bytes": 13459
+    },
+    {
+      "path": "docs/zh-CN/reference/GIT_CONFIG_SOURCES.md",
+      "filename": "GIT_CONFIG_SOURCES.md",
+      "category": "api",
+      "size_bytes": 20501
+    },
+    {
+      "path": "docs/zh-CN/reference/LARGE_DOCUMENTATION.md",
+      "filename": "LARGE_DOCUMENTATION.md",
+      "category": "api",
+      "size_bytes": 9464
+    },
+    {
+      "path": "docs/zh-CN/reference/LLMS_TXT_SUPPORT.md",
+      "filename": "LLMS_TXT_SUPPORT.md",
+      "category": "api",
+      "size_bytes": 1385
+    },
+    {
+      "path": "docs/zh-CN/reference/MCP_REFERENCE.md",
+      "filename": "MCP_REFERENCE.md",
+      "category": "api",
+      "size_bytes": 23033
+    },
+    {
+      "path": "docs/zh-CN/reference/SKILL_ARCHITECTURE.md",
+      "filename": "SKILL_ARCHITECTURE.md",
+      "category": "api",
+      "size_bytes": 23098
+    },
+    {
+      "path": "docs/zh-CN/user-guide/01-core-concepts.md",
+      "filename": "01-core-concepts.md",
+      "category": "guides",
+      "size_bytes": 9228
+    },
+    {
+      "path": "docs/zh-CN/user-guide/02-scraping.md",
+      "filename": "02-scraping.md",
+      "category": "guides",
+      "size_bytes": 7520
+    },
+    {
+      "path": "docs/zh-CN/user-guide/03-enhancement.md",
+      "filename": "03-enhancement.md",
+      "category": "guides",
+      "size_bytes": 8411
+    },
+    {
+      "path": "docs/zh-CN/user-guide/04-packaging.md",
+      "filename": "04-packaging.md",
+      "category": "guides",
+      "size_bytes": 10490
+    },
+    {
+      "path": "docs/zh-CN/user-guide/05-workflows.md",
+      "filename": "05-workflows.md",
+      "category": "guides",
+      "size_bytes": 10463
+    },
+    {
+      "path": "docs/zh-CN/user-guide/06-troubleshooting.md",
+      "filename": "06-troubleshooting.md",
+      "category": "guides",
+      "size_bytes": 10091
+    },
+    {
+      "path": "examples/chroma-example/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 9387
+    },
+    {
+      "path": "examples/cline-django-assistant/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 8527
+    },
+    {
+      "path": "examples/continue-dev-universal/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 12118
+    },
+    {
+      "path": "examples/cursor-react-skill/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 9386
+    },
+    {
+      "path": "examples/cursor-react-skill/example-project/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 1050
+    },
+    {
+      "path": "examples/faiss-example/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 2204
+    },
+    {
+      "path": "examples/haystack-pipeline/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 6590
+    },
+    {
+      "path": "examples/langchain-rag-pipeline/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 3266
+    },
+    {
+      "path": "examples/llama-index-query-engine/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 4370
+    },
+    {
+      "path": "examples/pinecone-upsert/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 6050
+    },
+    {
+      "path": "examples/qdrant-example/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 2012
+    },
+    {
+      "path": "examples/weaviate-example/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 8324
+    },
+    {
+      "path": "examples/windsurf-fastapi-context/README.md",
+      "filename": "README.md",
+      "category": "examples",
+      "size_bytes": 6716
+    },
+    {
+      "path": "scripts/skill_header.md",
+      "filename": "skill_header.md",
+      "category": "other",
+      "size_bytes": 893
+    },
+    {
+      "path": "skills/skill-seekers/SKILL.md",
+      "filename": "SKILL.md",
+      "category": "other",
+      "size_bytes": 3073
+    },
+    {
+      "path": "src/skill_seekers/mcp/README.md",
+      "filename": "README.md",
+      "category": "other",
+      "size_bytes": 19409
+    },
+    {
+      "path": "tests/mcp_integration_test.md",
+      "filename": "mcp_integration_test.md",
+      "category": "other",
+      "size_bytes": 9411
+    }
+  ]
+}

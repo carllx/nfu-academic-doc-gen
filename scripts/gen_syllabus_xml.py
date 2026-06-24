@@ -311,8 +311,17 @@ def fill_table2(root, context: dict):
     # R1 C4: 分值保留模板默认 100（卷面满分），不做替换
     # 注：占比已通过 C2 中的百分比体现
 
-    # R5-R7: 实验评分项
-    xxxx_rows = [5, 6, 7]
+    # 动态识别模板中用于实验评分的预留行 (R5 ~ 倒数第二行)
+    xxxx_rows = []
+    for i in range(5, len(rows) - 1):
+        cells = rows[i].findall(_qn('w:tc'))
+        if len(cells) > 2:
+            c2_text = "".join(_get_paragraph_text(p) for p in cells[2].iter(_qn('w:p')))
+            c3_text = "".join(_get_paragraph_text(p) for p in cells[3].iter(_qn('w:p'))) if len(cells) > 3 else ""
+            if 'XXXX' in c2_text or 'XXXX' in c3_text:
+                xxxx_rows.append(i)
+
+    rows_to_remove = []
     for slot_idx, ri in enumerate(xxxx_rows):
         if ri >= len(rows):
             break
@@ -346,6 +355,12 @@ def fill_table2(root, context: dict):
                         _set_run_text(p, str(item_desc))
                         
             # C4: 分值保留模板默认 100（卷面满分），不做替换
+        else:
+            rows_to_remove.append(rows[ri])
+            
+    for r in rows_to_remove:
+        tbl.remove(r)
+    
     
     # R8: 期末考核
     if len(rows) > 8:

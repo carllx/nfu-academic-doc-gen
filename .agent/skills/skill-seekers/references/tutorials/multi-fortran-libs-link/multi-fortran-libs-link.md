@@ -1,0 +1,145 @@
+# How To: Multi Fortran Libs Link
+
+**Difficulty**: Advanced
+**Estimated Time**: 20 minutes
+**Tags**: pytest, workflow, integration
+
+## Overview
+
+Workflow: Ensures multiple "fake" static libraries are correctly linked.
+see gh-18295
+
+## Prerequisites
+
+- [ ] Setup code must be executed first
+
+**Required Modules:**
+- `os`
+- `subprocess`
+- `sys`
+- `textwrap`
+- `pytest`
+- `numpy.testing`
+- `numpy.distutils.tests.utilities`
+
+**Setup Required:**
+```python
+# Fixtures: tmp_path
+```
+
+## Step-by-Step Guide
+
+### Step 1: '\n    Ensures multiple "fake" static libraries are correctly linked.\n    see gh-18295\n    '
+
+```python
+'\n    Ensures multiple "fake" static libraries are correctly linked.\n    see gh-18295\n    '
+```
+
+**Verification:**
+```python
+assert so is not None
+```
+
+### Step 2: Assign build_dir = tmp_path
+
+```python
+build_dir = tmp_path
+```
+
+### Step 3: Call subprocess.check_call()
+
+```python
+subprocess.check_call([sys.executable, 'setup.py', 'build', 'install', '--prefix', str(tmp_path / 'installdir'), '--record', str(tmp_path / 'tmp_install_log.txt')], cwd=str(build_dir))
+```
+
+### Step 4: Assign so = None
+
+```python
+so = None
+```
+
+**Verification:**
+```python
+assert so is not None
+```
+
+### Step 5: Call pytest.skip()
+
+```python
+pytest.skip('No F77 compiler found')
+```
+
+### Step 6: Call fid.write()
+
+```python
+fid.write(indent(dedent('            FUNCTION dummy_one()\n            RETURN\n            END FUNCTION'), prefix=' ' * 6))
+```
+
+### Step 7: Call fid.write()
+
+```python
+fid.write(indent(dedent('            FUNCTION dummy_two()\n            RETURN\n            END FUNCTION'), prefix=' ' * 6))
+```
+
+### Step 8: Call fid.write()
+
+```python
+fid.write('int PyInit_dummyext;')
+```
+
+### Step 9: Assign srctree = os.path.join(...)
+
+```python
+srctree = os.path.join(os.path.dirname(__file__), '..', '..', '..')
+```
+
+### Step 10: Call fid.write()
+
+```python
+fid.write(dedent(f'            def configuration(parent_package="", top_path=None):\n                from numpy.distutils.misc_util import Configuration\n                config = Configuration("", parent_package, top_path)\n                config.add_library("dummy1", sources=["_dummy1.f"])\n                config.add_library("dummy2", sources=["_dummy2.f"])\n                config.add_extension("dummyext", sources=["_dummy.c"], libraries=["dummy1", "dummy2"])\n                return config\n\n\n            if __name__ == "__main__":\n                import sys\n                sys.path.insert(0, r"{srctree}")\n                from numpy.distutils.core import setup\n                setup(**configuration(top_path="").todict())'))
+```
+
+### Step 11: Assign so = line.strip(...)
+
+```python
+so = line.strip()
+```
+
+
+## Complete Example
+
+```python
+# Setup
+# Fixtures: tmp_path
+
+# Workflow
+'\n    Ensures multiple "fake" static libraries are correctly linked.\n    see gh-18295\n    '
+from numpy.distutils.tests.utilities import has_f77_compiler
+if not has_f77_compiler():
+    pytest.skip('No F77 compiler found')
+with open(tmp_path / '_dummy1.f', 'w') as fid:
+    fid.write(indent(dedent('            FUNCTION dummy_one()\n            RETURN\n            END FUNCTION'), prefix=' ' * 6))
+with open(tmp_path / '_dummy2.f', 'w') as fid:
+    fid.write(indent(dedent('            FUNCTION dummy_two()\n            RETURN\n            END FUNCTION'), prefix=' ' * 6))
+with open(tmp_path / '_dummy.c', 'w') as fid:
+    fid.write('int PyInit_dummyext;')
+with open(tmp_path / 'setup.py', 'w') as fid:
+    srctree = os.path.join(os.path.dirname(__file__), '..', '..', '..')
+    fid.write(dedent(f'            def configuration(parent_package="", top_path=None):\n                from numpy.distutils.misc_util import Configuration\n                config = Configuration("", parent_package, top_path)\n                config.add_library("dummy1", sources=["_dummy1.f"])\n                config.add_library("dummy2", sources=["_dummy2.f"])\n                config.add_extension("dummyext", sources=["_dummy.c"], libraries=["dummy1", "dummy2"])\n                return config\n\n\n            if __name__ == "__main__":\n                import sys\n                sys.path.insert(0, r"{srctree}")\n                from numpy.distutils.core import setup\n                setup(**configuration(top_path="").todict())'))
+build_dir = tmp_path
+subprocess.check_call([sys.executable, 'setup.py', 'build', 'install', '--prefix', str(tmp_path / 'installdir'), '--record', str(tmp_path / 'tmp_install_log.txt')], cwd=str(build_dir))
+so = None
+with open(tmp_path / 'tmp_install_log.txt') as fid:
+    for line in fid:
+        if 'dummyext' in line:
+            so = line.strip()
+            break
+assert so is not None
+```
+
+## Next Steps
+
+
+---
+
+*Source: test_build_ext.py:12 | Complexity: Advanced | Last updated: 2026-06-02*
